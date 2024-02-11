@@ -18,12 +18,11 @@ namespace BugTracks.Models
         public string LastName { get; set; }
         
         [NotMapped]
-        public string FullName 
-            { get
-                {
-                    return { FirstName + " " + LastName};
-                } 
-            }
+        [Display(Name = "Full Name")]
+        public string FullName { get { return $"{FirstName} {LastName}"; } }
+
+
+
 
         public string Email { get; set; }
 
