@@ -18,5 +18,8 @@ namespace BugTracks.Models
         public virtual ICollection<BTUser> Members { get; set; } 
         public virtual ICollection<Project> Projects { get; set; }
 
+
+        // Create a relationship to the invites
+
     }
 }
