@@ -1,5 +1,7 @@
 using BugTracks.Data;
 using BugTracks.Models;
+using BugTracks.Services;
+using BugTracks.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,8 @@ builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.Req
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
+// BTRoles Services
+builder.Services.AddScoped<IBTRolesService, BTRolesService>();
 
 var app = builder.Build();
 
