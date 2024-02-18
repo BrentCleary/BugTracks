@@ -29,6 +29,8 @@ builder.Services.AddControllersWithViews();
 
 // BTRoles Services
 builder.Services.AddScoped<IBTRolesService, BTRolesService>();
+// BTCompany Services
+builder.Services.AddScoped<IBTCompanyInfoService, BTCompanyInfoService>();
 
 var app = builder.Build();
 
