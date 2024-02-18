@@ -20,6 +20,6 @@ namespace BugTracks.Models
 
 
         // Create a relationship to the invites
-
+        public virtual ICollection<Invite> Invites { get; set; }
     }
 }
