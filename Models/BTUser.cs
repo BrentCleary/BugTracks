@@ -8,7 +8,7 @@ namespace BugTracks.Models
     public class BTUser : IdentityUser
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [Display(Name = "First Name")]

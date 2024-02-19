@@ -61,7 +61,7 @@ namespace BugTracks.Services
         // ---- Check this Method --- userIds should be a string - threw an error so set to an int
         public async Task<List<BTUser>> GetUsersNotInRoleAsync(string roleName, int companyId)
         {
-            List<int> userIds = (await _userManager.GetUsersInRoleAsync(roleName)).Select(u => u.Id).ToList();
+            List<string> userIds = (await _userManager.GetUsersInRoleAsync(roleName)).Select(u => u.Id).ToList();
             List<BTUser> roleUsers = _context.Users.Where(u => !userIds.Contains(u.Id)).ToList();
             List<BTUser> result = roleUsers.Where(u => u.CompanyId == companyId).ToList();
 
