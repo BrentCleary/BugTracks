@@ -1,5 +1,6 @@
 ﻿using BugTracks.Data;
 using BugTracks.Models;
+using BugTracks.Models.Enums;
 using BugTracks.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -81,18 +82,22 @@ namespace BugTracks.Services
             await _context.SaveChangesAsync();
         }
 
-        List<int> userIds = (await _userManager.GetUsersInRoleAsync(roleName)).Select(u => u.Id).ToList();
-        List<BTUser> roleUsers = _context.Users.Where(u => !userIds.Contains(u.Id)).ToList();
-        List<BTUser> result = roleUsers.Where(u => u.CompanyId == companyId).ToList();
 
-            return result;
 
         public async Task<List<BTUser>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
-            List<int> userIds = (await _userManager.GetUsersInRoleAsync(Manager)).Select(u => u.Id).ToList();
-            List<BTUser> roleUsers = _context.Users.Where(u => !userIds.Contains(u.Id)).ToList();
-            List<BTUser> result = roleUsers.Where(u => u.ProjectId == projectId).ToList();
+            List<BTUser> developers = await GetProjectMembersByRoleAsync(projectId, Roles.Developer.ToString());
+            List<BTUser> submitters = await GetProjectMembersByRoleAsync(projectId, Roles.Submitter.ToString());
+            List<BTUser> admin = await GetProjectMembersByRoleAsync(projectId, Roles.Admin.ToString());
+
+            List<BTUser> teamMembers = developers.Concat(submitters).Concat(admin).ToList();
+
+            return teamMembers;
+
+
         }
+
+
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
@@ -223,9 +228,13 @@ namespace BugTracks.Services
 
         }
 
-        public Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
+        public async Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
         {
-            throw new NotImplementedException();
+
+            List<BTUser> users = await _context.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToListAsync();
+            
+            return users.Where(u=>u.CompanyId == companyId).ToList();
+
         }
 
         // Returns project by Id, including Member List, checks for userId in list, returns bool
