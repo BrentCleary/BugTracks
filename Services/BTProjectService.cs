@@ -13,14 +13,17 @@ namespace BugTracks.Services
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IBTRolesService _rolesService;
 
         public BTProjectService(ApplicationDbContext context,
                                 UserManager<BTUser> userManager,
-                                RoleManager<IdentityRole> roleManager)
+                                RoleManager<IdentityRole> roleManager,
+                                IBTRolesService roleService)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _rolesService = roleService;
         }
 
         public async Task AddNewProjectAsync(Project project)
@@ -153,10 +156,28 @@ namespace BugTracks.Services
             
         }
 
-        public Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
+        public async Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
         {
-            throw new NotImplementedException();
+            // Find Project
+            Project project = await _context.Projects
+                                            .Include(p=>p.Members)
+                                            .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            // Filter by Role using RoleManager
+            List<BTUser> members = new(); 
+            
+            foreach(var user in project.Members)
+            {
+                if(await _rolesService.IsUserInRoleAsync(user, role))
+                {
+                    members.Add(user);
+                }
+                            
+            }
+            return members;
+
         }
+
 
         public Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId)
         {
@@ -261,10 +282,36 @@ namespace BugTracks.Services
 
         }
 
-        public Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
+        public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<BTUser> members = await GetProjectMembersByRoleAsync(projectId, role);
+            
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+                
+                foreach(BTUser btuser in members)
+                {
+                    try
+                    {
+                        project.Members.Remove(btuser);
+                        _context.SaveChanges();
+
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"********** ERROR ********** - Error Removing User from Project by Role. ----> {ex.Message}");
+                throw;
+            }
         }
+
+        
 
         public async Task UpdateProjectAsync(Project project)
         {
