@@ -158,7 +158,20 @@ namespace BugTracks.Services
 
         public async Task<BTUser> GetProjectManagerAsync(int projectId)
         {
+            Project project = await _context.Projects
+                                            .Include(p => p.Members)
+                                            .FirstOrDefaultAsync(p=>p.Id == projectId);
+
+            foreach(BTUser member in project?.Members)
+            {
+                if(await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                {
+                    return member;
+                }
+            }
             
+            return null;
+
         }
 
         public async Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
@@ -257,9 +270,27 @@ namespace BugTracks.Services
             throw new NotImplementedException();
         }
 
-        public Task RemoveProjectManagerAsync(int projectId)
+        public async Task RemoveProjectManagerAsync(int projectId)
         {
-            throw new NotImplementedException();
+            Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p =>p.Id == projectId);
+
+            try
+            {
+                foreach(BTUser member in project?.Members)
+                { 
+                    if(await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                    {
+                        await RemoveUserFromProjectAsync(member.Id, projectId);
+                    }
+                }
+
+            }
+            catch
+            {
+
+            }
+
+            return null;
         }
 
         public async Task RemoveUserFromProjectAsync(string userId, int projectId)
