@@ -287,10 +287,9 @@ namespace BugTracks.Services
             }
             catch
             {
-
+                throw;
             }
-
-            return null;
+            
         }
 
         public async Task RemoveUserFromProjectAsync(string userId, int projectId)
