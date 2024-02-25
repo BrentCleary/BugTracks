@@ -36,11 +36,33 @@ namespace BugTracks.Services
 
         public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
-            BTUser user = await _userManager.FindByIdAsync(userId);
+            // Remove Current PM
+            BTUser currentPM = await GetProjectManagerAsync(projectId);
+            if (currentPM != null)
+            {
+                try
+                {
+                    await RemoveProjectManagerAsync(projectId);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Error removing current PM. - Error: {ex.Message}");
+                    return false;
+                }
+            }
 
+            // Add new PM
+            try
+            {
+                await AddProjectManagerAsync(userId, projectId);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error adding new PM. - Error: {ex.Message}");
+                return false;
+            }
 
-
-            bool result = await _userManager.AddToRoleAsync(user, role);
         }
 
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
@@ -141,8 +163,7 @@ namespace BugTracks.Services
 
         public async Task<List<BTUser>> GetDevelopersOnProjectAsync(int projectId)
         {
-            List<BTUser> users = _context.Projects.
-            List<int> userIds = await _userManager.GetUsersInRoleAsync(Developer).Select(u => u.Id).ToListAsync();
+            throw new NotImplementedException();
         }
 
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
@@ -258,7 +279,7 @@ namespace BugTracks.Services
             
             if(project != null)
             {
-                // Any Query return a bool
+                // Any Query returns a bool
                 result = project.Members.Any(m => m.Id == userId);
             }
 
@@ -350,12 +371,12 @@ namespace BugTracks.Services
             }
         }
 
-        
 
         public async Task UpdateProjectAsync(Project project)
         {
             _context.Update(project);
             await _context.SaveChangesAsync();
         }
+
     }
 }
