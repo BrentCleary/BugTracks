@@ -1,108 +1,123 @@
-﻿using BugTracks.Models;
+﻿using BugTracks.Data;
+using BugTracks.Models;
 using BugTracks.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BugTracks.Services
 {
     public class BTTicketService : IBTTicketService
     {
-        Task IBTTicketService.AddNewTicketAsync(Ticket ticket)
+        private readonly ApplicationDbContext _context;
+        
+        public BTTicketService(ApplicationDbContext context) 
+        { 
+            _context = context;
+        }
+
+        public async Task AddNewTicketAsync(Ticket ticket)
+        {
+            _context.Add(ticket);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ArchiveTicketAsync(Ticket ticket)
+        {
+            ticket.Archived = true;
+            _context.Update(ticket);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task AssignTicketAsync(int ticketId, string userId)
         {
             throw new NotImplementedException();
         }
 
-        Task IBTTicketService.ArchiveTicketAsync(Ticket ticket)
+        public Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
         {
             throw new NotImplementedException();
         }
 
-        Task IBTTicketService.AssignTicketAsync(int ticketId, string userId)
+        public Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetAllTicketsByCompanyAsync(int companyId)
+        public Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetAllTicketsByPriorityAsync(int companyId, string priorityName)
+        public Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetAllTicketsByStatusAsync(int companyId, string statusName)
+        public Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetAllTicketsByTypeAsync(int companyId, string typeName)
+        public Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetArchivedTicketsAsync(int companyId)
+        public Task<List<Ticket>> GetProjectTicketsByRoleAsync(string role, string userId, int projectId, int companyId)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
+        public Task<List<Ticket>> GetProjectTicketsByStatusAsync(string statusName, int companyId, int projectId)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetProjectTicketsByRoleAsync(string role, string userId, int projectId, int companyId)
+        public Task<List<Ticket>> GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetProjectTicketsByStatusAsync(string statusName, int companyId, int projectId)
+        public async Task<Ticket> GetTicketByIdAsync(int ticketId)
+        {
+            return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
+
+        }
+
+        public Task<BTUser> GetTicketDeveloperAsync(int ticketId)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId)
+        public Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId)
         {
             throw new NotImplementedException();
         }
 
-        Task<Ticket> IBTTicketService.GetTicketByIdAsync(int ticketId)
+        public Task<List<Ticket>> GetTicketsByUserIdAsync(string userId, int companyId)
         {
             throw new NotImplementedException();
         }
 
-        Task<BTUser> IBTTicketService.GetTicketDeveloperAsync(int ticketId)
+        public Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetTicketsByRoleAsync(string role, string userId, int companyId)
+        public Task<int?> LookupTicketStatusIdAsync(string statusName)
         {
             throw new NotImplementedException();
         }
 
-        Task<List<Ticket>> IBTTicketService.GetTicketsByUserIdAsync(string userId, int companyId)
+        public Task<int?> LookupTicketTypeIdAsync(string typeName)
         {
             throw new NotImplementedException();
         }
 
-        Task<int?> IBTTicketService.LookupTicketPriorityIdAsync(string priorityName)
+        public async Task UpdateTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
-        }
+            _context.Update(ticket);
+            await _context.SaveChangesAsync();
 
-        Task<int?> IBTTicketService.LookupTicketStatusIdAsync(string statusName)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<int?> IBTTicketService.LookupTicketTypeIdAsync(string typeName)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task IBTTicketService.UpdateTicketAsync(Ticket ticket)
-        {
-            throw new NotImplementedException();
         }
     }
 }
