@@ -145,9 +145,31 @@ namespace BugTracks.Services
             }
         }
 
-        public Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
+
+        /// <summary>
+        /// Double Check
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <returns></returns>
+
+        public async Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = await _context.Projects
+                                                 .Where(p=>p.CompanyId == companyId)
+                                                 .SelectMany(p => p.Tickets)
+                                                         .Include(t => t.Attachments)
+                                                         .Include(t => t.Comments)
+                                                         .Include(t => t.DeveloperUser)
+                                                         .Include(t => t.History)
+                                                         .Include(t => t.OwnerUser)
+                                                         .Include(t => t.TicketPriority)
+                                                         .Include(t => t.TicketStatus)
+                                                         .Include(t => t.TicketType)
+                                                         .Include(t => t.Project)
+                                                         .Where(t=> t.Archived == true)
+                                                 .ToListAsync();
+
+            return tickets;
         }
 
         public Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
