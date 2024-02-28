@@ -153,11 +153,6 @@ namespace BugTracks.Services
         }
 
 
-        /// <summary>
-        /// Double Check
-        /// </summary>
-        /// <param name="companyId"></param>
-        /// <returns></returns>
 
         public async Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
         {
@@ -202,9 +197,28 @@ namespace BugTracks.Services
 
         }
 
-        public Task<BTUser> GetTicketDeveloperAsync(int ticketId)
+        public async Task<BTUser> GetTicketDeveloperAsync(int ticketId, int companyId)
         {
-            throw new NotImplementedException();
+            BTUser developer = new();
+
+            try
+            {
+                Ticket ticket = (await GetAllTicketsByCompanyAsync(companyId)).FirstOrDefault(t => t.Id == ticketId);
+
+                if(ticket?.DeveloperUserId != null)
+                {
+                    // Developer Object is returned in GetAllTicketsByCompanyAsync Method
+                    developer = ticket.DeveloperUser;
+                    
+                }
+                
+                return developer;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+
         }
 
         public async Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId)
