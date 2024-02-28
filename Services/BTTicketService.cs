@@ -25,22 +25,37 @@ namespace BugTracks.Services
 
         public async Task AddNewTicketAsync(Ticket ticket)
         {
-            _context.Add(ticket);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Add(ticket);
+                await _context.SaveChangesAsync();
+
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
 
         public async Task ArchiveTicketAsync(Ticket ticket)
         {
-            ticket.Archived = true;
-            _context.Update(ticket);
-            await _context.SaveChangesAsync();
+            try
+            {
+                ticket.Archived = true;
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task AssignTicketAsync(int ticketId, string userId)
         {
 
             Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(t=>t.Id == ticketId);
-
 
             try
             {
@@ -261,7 +276,14 @@ namespace BugTracks.Services
 
         public async Task<Ticket> GetTicketByIdAsync(int ticketId)
         {
-            return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
+            try
+            {
+                return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
         }
 
@@ -401,8 +423,16 @@ namespace BugTracks.Services
 
         public async Task UpdateTicketAsync(Ticket ticket)
         {
-            _context.Update(ticket);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
     }

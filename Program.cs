@@ -33,6 +33,8 @@ builder.Services.AddScoped<IBTRolesService, BTRolesService>();
 builder.Services.AddScoped<IBTCompanyInfoService, BTCompanyInfoService>();
 // BTProject Services
 builder.Services.AddScoped<IBTProjectService, BTProjectService>();
+// BTProject Services
+builder.Services.AddScoped<IBTTicketService, BTTicketService>();
 
 var app = builder.Build();
 
