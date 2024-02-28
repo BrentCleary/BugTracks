@@ -1,5 +1,6 @@
 ﻿using BugTracks.Data;
 using BugTracks.Models;
+using BugTracks.Models.Enums;
 using BugTracks.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +9,16 @@ namespace BugTracks.Services
     public class BTTicketService : IBTTicketService
     {
         private readonly ApplicationDbContext _context;
+        private readonly BTRolesService _rolesService;
+        private readonly BTProjectService _projectService;
         
-        public BTTicketService(ApplicationDbContext context) 
+        public BTTicketService(ApplicationDbContext context, 
+                               BTRolesService rolesService,
+                               BTProjectService projectService) 
         { 
             _context = context;
+            _rolesService = rolesService;
+            _projectService = projectService;
         }
 
         public async Task AddNewTicketAsync(Ticket ticket)
@@ -154,22 +161,19 @@ namespace BugTracks.Services
 
         public async Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
         {
-            List<Ticket> tickets = await _context.Projects
-                                                 .Where(p=>p.CompanyId == companyId)
-                                                 .SelectMany(p => p.Tickets)
-                                                         .Include(t => t.Attachments)
-                                                         .Include(t => t.Comments)
-                                                         .Include(t => t.DeveloperUser)
-                                                         .Include(t => t.History)
-                                                         .Include(t => t.OwnerUser)
-                                                         .Include(t => t.TicketPriority)
-                                                         .Include(t => t.TicketStatus)
-                                                         .Include(t => t.TicketType)
-                                                         .Include(t => t.Project)
-                                                         .Where(t=> t.Archived == true)
-                                                 .ToListAsync();
+            List<Ticket> tickets = new();
 
-            return tickets;
+            try
+            {
+                tickets = (await GetAllTicketsByCompanyAsync(companyId))
+                                                .Where(t=>t.Archived == true).ToList();
+
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
@@ -203,14 +207,76 @@ namespace BugTracks.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId)
+        public async Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId)
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = new();
+
+            try
+            {
+                // Admin has access to all tickets
+                if(role == Roles.Admin.ToString())
+                {
+                    tickets = await GetAllTicketsByCompanyAsync(companyId);
+                }
+                // Developer has access to owned tickets
+                else if(role == Roles.Developer.ToString())
+                {
+                    tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t=>t.DeveloperUserId == userId).ToList();
+                }
+                // Submitter has access to tickets they submitted(own)
+                else if (role == Roles.Submitter.ToString())
+                {
+                    tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => t.OwnerUserId == userId).ToList();
+                }
+                else if (role == Roles.ProjectManager.ToString())
+                {
+                    tickets = await GetTicketsByUserIdAsync(userId, companyId);
+                }
+
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
 
-        public Task<List<Ticket>> GetTicketsByUserIdAsync(string userId, int companyId)
+        public async Task<List<Ticket>> GetTicketsByUserIdAsync(string userId, int companyId)
         {
-            throw new NotImplementedException();
+            BTUser? btUser = await _context.Users.FirstOrDefaultAsync(u=>u.Id == userId);
+            List<Ticket> tickets = new();
+
+            try 
+            {
+                if (await _rolesService.IsUserInRoleAsync(btUser, Roles.Admin.ToString()))
+                {
+                    tickets = (await _projectService.GetAllProjectsByCompany(companyId)).SelectMany(p=>p.Tickets).ToList();
+                }
+                else if (await _rolesService.IsUserInRoleAsync(btUser, Roles.Developer.ToString()))
+                {
+                    tickets = (await _projectService.GetAllProjectsByCompany(companyId))
+                                                    .SelectMany(p => p.Tickets).Where(t => t.DeveloperUserId == userId).ToList();
+                }
+                else if (await _rolesService.IsUserInRoleAsync(btUser, Roles.Submitter.ToString()))
+                {
+                    tickets = (await _projectService.GetAllProjectsByCompany(companyId))
+                                                    .SelectMany(p => p.Tickets).Where(t => t.OwnerUserId == userId).ToList();
+                }
+                else if (await _rolesService.IsUserInRoleAsync(btUser, Roles.ProjectManager.ToString()))
+                {
+                    // GetUserProjects includes all ticket information fields
+                    tickets = (await _projectService.GetUserProjectsAsync(userId)).SelectMany(p => p.Tickets).ToList();
+                }
+
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
         }
 
         public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
