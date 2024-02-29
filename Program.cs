@@ -27,6 +27,7 @@ builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.Req
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
+
 // --- BTSERVICES ---
 // Roles Services
 builder.Services.AddScoped<IBTRolesService, BTRolesService>();
@@ -38,6 +39,7 @@ builder.Services.AddScoped<IBTProjectService, BTProjectService>();
 builder.Services.AddScoped<IBTTicketService, BTTicketService>();
 // TicketHistory Services
 builder.Services.AddScoped<IBTTicketHistoryService, BTTicketHistoryService>();
+
 
 var app = builder.Build();
 
