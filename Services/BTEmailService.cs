@@ -14,7 +14,7 @@ namespace BugTracks.Services
             _mailSettings = mailSettings.Value;
         }
 
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             
         }
