@@ -199,7 +199,7 @@ namespace BugTracks.Services
             }
             catch(Exception)
             {
-
+                throw;
             }
 
         }

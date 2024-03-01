@@ -4,6 +4,7 @@ using BugTracks.Services;
 using BugTracks.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,10 @@ builder.Services.AddScoped<IBTProjectService, BTProjectService>();
 builder.Services.AddScoped<IBTTicketService, BTTicketService>();
 // TicketHistory Services
 builder.Services.AddScoped<IBTTicketHistoryService, BTTicketHistoryService>();
+// Email Services
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+
 
 
 var app = builder.Build();
