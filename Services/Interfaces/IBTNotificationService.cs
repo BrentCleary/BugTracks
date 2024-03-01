@@ -14,7 +14,7 @@ namespace BugTracks.Services.Interfaces
 
         public Task SendMembersEmailNotificationsAsync(Notification notification, List<BTUser> members);
 
-        public Task SendEmailNotificationAsync(Notification notification, string emailSubject);
+        public Task<bool> SendEmailNotificationAsync(Notification notification, string emailSubject);
 
     }
 }
