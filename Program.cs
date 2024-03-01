@@ -44,6 +44,8 @@ builder.Services.AddScoped<IBTTicketHistoryService, BTTicketHistoryService>();
 // Email Services
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddScoped<IEmailSender, BTEmailService>();
+// Notification Service
+builder.Services.AddScoped<IBTNotificationService, BTNotificationService>();
 
 
 

@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 namespace BugTracks.Services
 {
 
-    public class BTNotification : IBTNotificationService
+    public class BTNotificationService : IBTNotificationService
     {
 
         private readonly ApplicationDbContext _context;
@@ -17,7 +17,7 @@ namespace BugTracks.Services
         private readonly IBTRolesService _rolesService;
         private readonly BTEmailService _mailService;
 
-        public BTNotification(ApplicationDbContext context,
+        public BTNotificationService(ApplicationDbContext context,
                               IEmailSender emailSender,
                               IBTRolesService rolesService)
         {
