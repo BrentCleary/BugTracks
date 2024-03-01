@@ -15,7 +15,6 @@ namespace BugTracks.Services
         private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly IBTRolesService _rolesService;
-        private readonly BTEmailService _mailService;
 
         public BTNotificationService(ApplicationDbContext context,
                               IEmailSender emailSender,
