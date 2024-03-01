@@ -3,6 +3,7 @@ using BugTracks.Models;
 using BugTracks.Services;
 using BugTracks.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IBTTicketService, BTTicketService>();
 builder.Services.AddScoped<IBTTicketHistoryService, BTTicketHistoryService>();
 // Email Services
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddScoped<IEmailSender, BTEmailService>();
 
 
 
