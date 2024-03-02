@@ -7,11 +7,11 @@ using NuGet.Common;
 namespace BugTracks.Services
 
 {
-    public class BTInviteServices : IBTInviteService
+    public class BTInviteService : IBTInviteService
     {
         private readonly ApplicationDbContext _context;
 
-        public BTInviteServices(ApplicationDbContext contex)
+        public BTInviteService(ApplicationDbContext contex)
         {
             _context = contex;
         }
@@ -38,7 +38,6 @@ namespace BugTracks.Services
                 throw;
             }
         }
-
 
         public async Task AddNewInviteAsync(Invite invite)
         {
@@ -110,9 +109,33 @@ namespace BugTracks.Services
             }
         }
 
-        public Task<bool> ValidateInviteCodeAsync(Guid? token)
+        public async Task<bool> ValidateInviteCodeAsync(Guid? token)
         {
-            throw new NotImplementedException();
+            if(token == null)
+            {
+                return false;
+            }
+
+            bool result = false;
+
+            Invite invite = await _context.Invites.FirstOrDefaultAsync(i => i.CompanyToken == token);
+
+            if(invite != null)
+            {
+                // Determine invite date
+                DateTime inviteDate = invite.InviteDate.UtcDateTime;
+
+                // Custom validation of invite based on the date it was issued
+                // In this case we are allowing an invite to be valid for 7 days
+                bool validDate = (DateTime.UtcNow - inviteDate).TotalDays <= 7;
+
+                if(validDate)
+                {
+                    result = invite.IsValid;
+                }
+            }
+
+            return result;
         }
     }
 }
