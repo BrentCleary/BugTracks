@@ -2,6 +2,7 @@
 using BugTracks.Models;
 using BugTracks.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Common;
 
 namespace BugTracks.Services
 
@@ -71,14 +72,42 @@ namespace BugTracks.Services
 
         }
 
-        public Task<Invite> GetInviteAsync(int inviteId, int companyId)
+        public async Task<Invite> GetInviteAsync(int inviteId, int companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Invite invite = await _context.Invites.Where(i => i.CompanyId == companyId)
+                                                      .Include(i => i.Company)
+                                                      .Include(i => i.Project)
+                                                      .Include(i => i.Invitor)
+                                                      .FirstOrDefaultAsync(i=>i.Id == inviteId);
+
+                return invite;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public Task<Invite> GetInviteAsync(Guid token, string email, int companyId)
+        public async Task<Invite> GetInviteAsync(Guid token, string email, int companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Invite invite = await _context.Invites.Where(i => i.CompanyId == companyId)
+                                                      .Include(i => i.Company)
+                                                      .Include(i => i.Project)
+                                                      .Include(i => i.Invitor)
+                                                      .FirstOrDefaultAsync(i => i.CompanyToken == token && i.InviteeEmail == email);
+
+                return invite;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Task<bool> ValidateInviteCodeAsync(Guid? token)
