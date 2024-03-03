@@ -20,9 +20,28 @@ namespace BugTracks.Services
             }
         }
 
-        public Task<byte[]> ConvertFileToByteArrayAsync(IFormFile file)
+        public async Task<byte[]> ConvertFileToByteArrayAsync(IFormFile file)
         {
-            throw new NotImplementedException();
+            try
+            {
+                MemoryStream memoryStream = new();
+                // Copy to Async is a method of the IFormFile Interface
+                await file.CopyToAsync(memoryStream);
+                // ToArray converts the memoryStream variable to a byte array for storage
+                byte[] byteFile = memoryStream.ToArray();
+
+                // Clears the memoryStream
+                memoryStream.Close();
+                memoryStream.Dispose();
+
+                return byteFile;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public string FormatFileSize(long bytes)
