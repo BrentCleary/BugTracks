@@ -1,4 +1,5 @@
 ﻿using BugTracks.Services.Interfaces;
+using System.Drawing;
 
 namespace BugTracks.Services
 {
@@ -46,12 +47,30 @@ namespace BugTracks.Services
 
         public string FormatFileSize(long bytes)
         {
-            throw new NotImplementedException();
+            int counter = 0;
+            decimal fileSize = bytes;
+
+            while (Math.Round(fileSize /1024) >= 1)
+            {
+                fileSize /= bytes;
+                counter++;
+            }
+
+            return string.Format("{0:n1}{1}", fileSize, suffixes[counter]);
         }
 
         public string GetFileIcon(string file)
         {
-            throw new NotImplementedException();
+            string fileImage = "default";
+
+            if(!string.IsNullOrWhiteSpace(file))
+            {
+                fileImage = Path.GetExtension(file).Replace(".", "");
+
+                return $"/img/png/{fileImage}.png";
+            }
+
+            return fileImage;
         }
     }
 }
