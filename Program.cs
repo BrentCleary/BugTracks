@@ -48,9 +48,8 @@ builder.Services.AddScoped<IEmailSender, BTEmailService>();
 builder.Services.AddScoped<IBTNotificationService, BTNotificationService>();
 // Invite Service
 builder.Services.AddScoped<IBTInviteService, BTInviteService>();
-
-    // File Service
-    //builder.Services.AddScoped<IBTFileService, BTFileService>();
+// File Service
+builder.Services.AddScoped<IBTFileService, BTFileService>();
 
 
 
