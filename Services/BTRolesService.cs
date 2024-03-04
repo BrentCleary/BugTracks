@@ -34,7 +34,7 @@ namespace BugTracks.Services
         public async Task<string> GetRoleNameByIdAsync(string roleId)
         {
             IdentityRole role = _context.Roles.Find(roleId);
-            string result =  await _roleManager.GetRoleNameAsync(role);
+            string result = await _roleManager.GetRoleNameAsync(role);
 
             return result;
         }

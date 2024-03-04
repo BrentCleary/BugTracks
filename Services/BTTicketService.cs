@@ -1,6 +1,7 @@
 ﻿using BugTracks.Data;
 using BugTracks.Models;
 using BugTracks.Models.Enums;
+using BugTracks.Services;
 using BugTracks.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -101,7 +102,7 @@ namespace BugTracks.Services
 
                 return tickets;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 throw;
             }
