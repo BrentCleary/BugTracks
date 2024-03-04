@@ -56,6 +56,8 @@ builder.Services.AddScoped<IBTFileService, BTFileService>();
 
 var app = builder.Build();
 
+await DataUtility.ManageDataAsync(app);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
