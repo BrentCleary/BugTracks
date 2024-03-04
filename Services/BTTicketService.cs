@@ -1,8 +1,7 @@
 ﻿using BugTracks.Data;
 using BugTracks.Models;
-using BugTracks.Models.Enums;
-using BugTracks.Services;
 using BugTracks.Services.Interfaces;
+using BugTracks.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BugTracks.Services
@@ -21,8 +20,6 @@ namespace BugTracks.Services
             _rolesService = rolesService;
             _projectService = projectService;
         }
-
-
 
         public async Task AddNewTicketAsync(Ticket ticket)
         {
