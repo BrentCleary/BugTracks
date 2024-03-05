@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BugTracks.Data.Migrations
+namespace BugTracks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240214144703_Data Models")]
+    [Migration("20240305050952_DataModels")]
     partial class DataModels
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace BugTracks.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -711,7 +711,7 @@ namespace BugTracks.Data.Migrations
             modelBuilder.Entity("BugTracks.Models.Invite", b =>
                 {
                     b.HasOne("BugTracks.Models.Company", "Company")
-                        .WithMany()
+                        .WithMany("Invites")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -940,6 +940,8 @@ namespace BugTracks.Data.Migrations
 
             modelBuilder.Entity("BugTracks.Models.Company", b =>
                 {
+                    b.Navigation("Invites");
+
                     b.Navigation("Members");
 
                     b.Navigation("Projects");
