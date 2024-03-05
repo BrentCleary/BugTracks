@@ -9,12 +9,12 @@ namespace BugTracks.Services
     public class BTTicketService : IBTTicketService
     {
         private readonly ApplicationDbContext _context;
-        private readonly BTRolesService _rolesService;
-        private readonly BTProjectService _projectService;
+        private readonly IBTRolesService _rolesService;
+        private readonly IBTProjectService _projectService;
         
         public BTTicketService(ApplicationDbContext context, 
-                               BTRolesService rolesService,
-                               BTProjectService projectService) 
+                               IBTRolesService rolesService,
+                               IBTProjectService projectService) 
         { 
             _context = context;
             _rolesService = rolesService;
