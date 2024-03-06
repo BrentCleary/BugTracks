@@ -20,10 +20,10 @@ namespace BugTracks.Models
         public string Description { get; set; }
 
         [DisplayName("Start Date")]
-        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [DisplayName("End Date")]
-        public DateTimeOffset EndDate { get; set; }
+        public DateTimeOffset EndDate { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [DisplayName("Priority")]
         public int? ProjectPriorityId { get; set; }
@@ -32,15 +32,15 @@ namespace BugTracks.Models
         // Image Properties
         [NotMapped]
         [DataType(DataType.Upload)]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         [DisplayName("File Name")]
-        public string ImageFileName { get; set; }
+        public string? ImageFileName { get; set; }
 
-        public byte[] ImageFileData { get; set; }
+        public byte[]? ImageFileData { get; set; }
 
         [DisplayName("File Extension")]
-        public string ImageContentType { get; set; }
+        public string? ImageContentType { get; set; }
 
         [DisplayName("Archived")]
         public bool Archived { get; set; }

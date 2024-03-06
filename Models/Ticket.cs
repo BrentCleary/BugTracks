@@ -20,11 +20,11 @@ namespace BugTracks.Models
 
         [DataType(DataType.Date)]
         [DisplayName("Created")]
-        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset Created { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [DataType(DataType.Date)]
         [DisplayName("Updated")]
-        public DateTimeOffset? Updated { get; set; }
+        public DateTimeOffset? Updated { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [DisplayName("Archived")]
         public bool Archived { get; set; }
@@ -44,10 +44,10 @@ namespace BugTracks.Models
         public int TicketStatusId { get; set; }
 
         [DisplayName("Ticket Owner")]
-        public string OwnerUserId { get; set; }
+        public string? OwnerUserId { get; set; }
 
         [DisplayName("Ticket Developer")]
-        public string DeveloperUserId { get; set; }
+        public string? DeveloperUserId { get; set; }
 
 
         //Navigation Properties

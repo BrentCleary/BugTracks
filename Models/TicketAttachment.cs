@@ -14,7 +14,7 @@ namespace BugTracks.Models
         public int TicketId { get; set; }
 
         [DisplayName("File Date")]
-        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset Created { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [DisplayName("Team Member")]
         public string UserId { get; set; }
@@ -33,7 +33,7 @@ namespace BugTracks.Models
         public byte[] FileData { get; set; }
         
         [DisplayName("File Extension")]
-        public string FileContentType { get; set; }
+        public string? FileContentType { get; set; }
 
 
         // Navigation Properties

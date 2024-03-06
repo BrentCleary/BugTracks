@@ -4,10 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BugTracks.Migrations
+namespace BugTracks.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class DataModels : Migration
+    public partial class Initial_001 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -120,9 +120,9 @@ namespace BugTracks.Migrations
                     Id = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
-                    AvatarFileName = table.Column<string>(type: "text", nullable: false),
-                    AvatarFileData = table.Column<byte[]>(type: "bytea", nullable: false),
-                    AvatarContentType = table.Column<string>(type: "text", nullable: false),
+                    AvatarFileName = table.Column<string>(type: "text", nullable: true),
+                    AvatarFileData = table.Column<byte[]>(type: "bytea", nullable: true),
+                    AvatarContentType = table.Column<string>(type: "text", nullable: true),
                     CompanyId = table.Column<int>(type: "integer", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -161,9 +161,9 @@ namespace BugTracks.Migrations
                     StartDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ProjectPriorityId = table.Column<int>(type: "integer", nullable: true),
-                    ImageFileName = table.Column<string>(type: "text", nullable: false),
-                    ImageFileData = table.Column<byte[]>(type: "bytea", nullable: false),
-                    ImageContentType = table.Column<string>(type: "text", nullable: false),
+                    ImageFileName = table.Column<string>(type: "text", nullable: true),
+                    ImageFileData = table.Column<byte[]>(type: "bytea", nullable: true),
+                    ImageContentType = table.Column<string>(type: "text", nullable: true),
                     Archived = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -353,8 +353,8 @@ namespace BugTracks.Migrations
                     TicketTypeId = table.Column<int>(type: "integer", nullable: false),
                     TicketPriorityId = table.Column<int>(type: "integer", nullable: false),
                     TicketStatusId = table.Column<int>(type: "integer", nullable: false),
-                    OwnerUserId = table.Column<string>(type: "text", nullable: false),
-                    DeveloperUserId = table.Column<string>(type: "text", nullable: false)
+                    OwnerUserId = table.Column<string>(type: "text", nullable: true),
+                    DeveloperUserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -363,14 +363,12 @@ namespace BugTracks.Migrations
                         name: "FK_Tickets_AspNetUsers_DeveloperUserId",
                         column: x => x.DeveloperUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tickets_AspNetUsers_OwnerUserId",
                         column: x => x.OwnerUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tickets_Projects_ProjectId",
                         column: x => x.ProjectId,
@@ -440,7 +438,7 @@ namespace BugTracks.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     FileName = table.Column<string>(type: "text", nullable: false),
                     FileData = table.Column<byte[]>(type: "bytea", nullable: false),
-                    FileContentType = table.Column<string>(type: "text", nullable: false)
+                    FileContentType = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -471,7 +469,7 @@ namespace BugTracks.Migrations
                     NewValue = table.Column<string>(type: "text", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -480,8 +478,7 @@ namespace BugTracks.Migrations
                         name: "FK_TicketHistories_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TicketHistories_Tickets_TicketId",
                         column: x => x.TicketId,
@@ -499,7 +496,7 @@ namespace BugTracks.Migrations
                     Comment = table.Column<string>(type: "text", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     TicketId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -508,8 +505,7 @@ namespace BugTracks.Migrations
                         name: "FK_TicketsComments_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TicketsComments_Tickets_TicketId",
                         column: x => x.TicketId,

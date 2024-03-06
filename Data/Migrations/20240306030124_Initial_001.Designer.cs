@@ -3,17 +3,20 @@ using System;
 using BugTracks.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BugTracks.Migrations
+namespace BugTracks.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240306030124_Initial_001")]
+    partial class Initial_001
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,15 +49,12 @@ namespace BugTracks.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("AvatarContentType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<byte[]>("AvatarFileData")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<string>("AvatarFileName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("CompanyId")
@@ -270,15 +270,12 @@ namespace BugTracks.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ImageContentType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<byte[]>("ImageFileData")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<string>("ImageFileName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -337,11 +334,9 @@ namespace BugTracks.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("DeveloperUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("OwnerUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("ProjectId")
@@ -397,7 +392,6 @@ namespace BugTracks.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FileContentType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<byte[]>("FileData")
@@ -443,7 +437,6 @@ namespace BugTracks.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -486,7 +479,6 @@ namespace BugTracks.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -780,15 +772,11 @@ namespace BugTracks.Migrations
                 {
                     b.HasOne("BugTracks.Models.BTUser", "DeveloperUser")
                         .WithMany()
-                        .HasForeignKey("DeveloperUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DeveloperUserId");
 
                     b.HasOne("BugTracks.Models.BTUser", "OwnerUser")
                         .WithMany()
-                        .HasForeignKey("OwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerUserId");
 
                     b.HasOne("BugTracks.Models.Project", "Project")
                         .WithMany("Tickets")
@@ -856,9 +844,7 @@ namespace BugTracks.Migrations
 
                     b.HasOne("BugTracks.Models.BTUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Ticket");
 
@@ -875,9 +861,7 @@ namespace BugTracks.Migrations
 
                     b.HasOne("BugTracks.Models.BTUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Ticket");
 

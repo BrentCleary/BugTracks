@@ -20,7 +20,7 @@ namespace BugTracks.Models
 
         [DataType(DataType.Date)]
         [DisplayName("Date")]
-        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset Created { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [Required]
         [DisplayName("Recipient")]

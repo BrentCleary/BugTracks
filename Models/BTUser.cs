@@ -7,8 +7,6 @@ namespace BugTracks.Models
 {
     public class BTUser : IdentityUser
     {
-        [Key]
-        public string Id { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
@@ -25,15 +23,15 @@ namespace BugTracks.Models
         // Image Properties
         [NotMapped]
         [DataType(DataType.Upload)]
-        public IFormFile AvatarFormFile { get; set; }
+        public IFormFile? AvatarFormFile { get; set; }
 
         [DisplayName("Avatar")]
-        public string AvatarFileName { get; set; }
+        public string? AvatarFileName { get; set; }
 
-        public byte[] AvatarFileData { get; set; }
+        public byte[]? AvatarFileData { get; set; }
         
         [Display(Name = "File Extension")]
-        public string AvatarContentType { get; set; }
+        public string? AvatarContentType { get; set; }
 
         // Nav Ids
         public int? CompanyId { get; set; }

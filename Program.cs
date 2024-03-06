@@ -51,7 +51,9 @@ builder.Services.AddScoped<IBTFileService, BTFileService>();
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 await DataUtility.ManageDataAsync(app);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

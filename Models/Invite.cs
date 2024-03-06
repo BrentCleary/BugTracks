@@ -8,10 +8,10 @@ namespace BugTracks.Models
         public int Id { get; set; }
 
         [DisplayName("Date Sent")]
-        public DateTimeOffset InviteDate { get; set; }
+        public DateTimeOffset InviteDate { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [DisplayName("Join Date")]
-        public DateTimeOffset JoinDate { get; set; }
+        public DateTimeOffset JoinDate { get; set; } 
 
 
         // Used to track a specific company in BugTracks
