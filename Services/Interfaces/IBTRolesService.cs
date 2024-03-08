@@ -7,6 +7,8 @@ namespace BugTracks.Services.Interfaces
         // User Role Status, Add, Remove
         public Task<bool> IsUserInRoleAsync(BTUser user, string roleName);
 
+        Get
+
         public Task<IEnumerable<string>> GetUserRolesAsync(BTUser user);
 
         public Task<bool> AddUserToRoleAsync(BTUser user, string roleName);
