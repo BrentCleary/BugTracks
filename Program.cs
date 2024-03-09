@@ -48,6 +48,8 @@ builder.Services.AddScoped<IBTNotificationService, BTNotificationService>();
 builder.Services.AddScoped<IBTInviteService, BTInviteService>();
 // File Service
 builder.Services.AddScoped<IBTFileService, BTFileService>();
+// Lookup Service
+builder.Services.AddScoped<IBTLookupService, BTLookupService>();
 
 
 
