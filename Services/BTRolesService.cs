@@ -22,6 +22,7 @@ namespace BugTracks.Services
             _userManager = userManager;
         }
 
+        #region GetRoles
         public async Task<List<IdentityRole>> GetRolesAsync()
         {
             try
@@ -30,14 +31,15 @@ namespace BugTracks.Services
 
                 result = await _context.Roles.ToListAsync();
 
-                return result
+                return result;
             }
             catch (Exception)
             {
 
                 throw;
             }
-        }
+        } 
+        #endregion
 
         // Returns a bool to confirm if the user has been added to the role
         public async Task<bool> AddUserToRoleAsync(BTUser user, string roleName)
