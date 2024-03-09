@@ -2,11 +2,13 @@
 using BugTracks.Models;
 using BugTracks.Models.ViewModels;
 using BugTracks.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BugTracks.Controllers
 {
+    [Authorize]
     public class UserRolesController : Controller
     {
         private readonly IBTRolesService _rolesService;
