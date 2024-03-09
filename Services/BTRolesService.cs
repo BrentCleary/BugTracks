@@ -22,6 +22,23 @@ namespace BugTracks.Services
             _userManager = userManager;
         }
 
+        public async Task<List<IdentityRole>> GetRolesAsync()
+        {
+            try
+            {
+                List<IdentityRole> result = new();
+
+                result = await _context.Roles.ToListAsync();
+
+                return result
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         // Returns a bool to confirm if the user has been added to the role
         public async Task<bool> AddUserToRoleAsync(BTUser user, string roleName)
         {
