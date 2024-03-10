@@ -11,6 +11,8 @@ using BugTracks.Extensions;
 using BugTracks.Models.ViewModels;
 using BugTracks.Services.Interfaces;
 using BugTracks.Models.Enums;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Runtime.CompilerServices;
 
 namespace BugTracks.Controllers
 {
@@ -19,14 +21,20 @@ namespace BugTracks.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IBTRolesService _rolesService;
         private readonly IBTLookupService _lookupService;
+        private readonly IBTFileService _fileService;
+        private readonly IBTProjectService _projectService;
 
-        public ProjectsController(ApplicationDbContext context, 
+        public ProjectsController(ApplicationDbContext context,
                                   IBTRolesService rolesService,
-                                  IBTLookupService lookupService)
+                                  IBTLookupService lookupService,
+                                  IBTFileService fileService,
+                                  IBTProjectService projectService)
         {
             _context = context;
             _rolesService = rolesService;
             _lookupService = lookupService;
+            _fileService = fileService;
+            _projectService = projectService;
         }
 
         // GET: Projects
@@ -77,17 +85,43 @@ namespace BugTracks.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CompanyId,Name,Description,StartDate,EndDate,ProjectPriorityId,ImageFileName,ImageFileData,ImageContentType,Archived")] Project project)
+        public async Task<IActionResult> Create(AddProjectWithPMViewModel model)
         {
-            if (ModelState.IsValid)
+            if(model != null)
             {
-                _context.Add(project);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                int companyId = User.Identity.GetCompanyId().Value;
+
+                try
+                {
+                    if(model.Project.ImageFile != null)
+                    {
+                        model.Project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(model.Project.ImageFile);
+                        model.Project.ImageFileName = model.Project.ImageFile.Name;
+                        model.Project.ImageContentType = model.Project.ImageFile.ContentType;
+                    }
+
+                    model.Project.CompanyId = companyId;
+
+                    await _projectService.AddNewProjectAsync(model.Project);
+
+                    // Add PM if one was chosen
+                    if(!string.IsNullOrEmpty(model.PmId))
+                    {
+                        await _projectService.AddProjectManagerAsync(model.PmId, model.Project.Id);
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+                // TODO: Redirect to All Projects
+                return RedirectToAction("Index");
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return View(project);
+
+            return RedirectToAction("Create");
         }
 
         // GET: Projects/Edit/5

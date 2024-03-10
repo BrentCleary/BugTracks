@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Choose a priority</label>
-                <select asp-for="ProjectPriority" class ="form-control" asp-items="@Model.PriorityList"></select>
+                <select asp-for="Project.ProjectPriorityId" class ="form-control" asp-items="@Model.PriorityList"></select>
             </div>
 
             @* Set up Image capture *@
@@ -45,15 +45,21 @@
                 <span asp-validation-for="Project.ImageFile" class="text-danger"></span>
             </div>
             <label> Image Preview </label>
-            @if (Model.Project.ImageFile != null)
+            @if (Model.Project?.ImageFile != null)
             {
                 <img id="imageFileData" class="img-fluid img-thumbnail" src="data:image/*;base64,@(Convert.ToBase64String(Model.Project.ImageFileData))" />
+            }
+            else
+            {
+                <img id="imageFileData" class="img-fluid img-thumbnail" src="" />
             }
             
             @* PM SelectList *@
             <div class="form-group">
                 <label class="control-label"> Project Manager </label>
-                <select asp-for="PmId" class="form-control" asp-items="@Model.PMList"></select>
+                <select asp-for="PmId" class="form-control" asp-items="@Model.PMList">
+                    <option></option>
+                </select>
             </div>
 
             <div class="form-group">
