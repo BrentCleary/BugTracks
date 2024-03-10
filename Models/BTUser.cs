@@ -34,7 +34,7 @@ namespace BugTracks.Models
         public string? AvatarContentType { get; set; }
 
         // Nav Ids
-        public int? CompanyId { get; set; }
+        public int CompanyId { get; set; }
 
 
         // Navigation Properties
