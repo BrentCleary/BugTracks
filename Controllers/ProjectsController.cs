@@ -185,18 +185,18 @@ namespace BugTracks.Controllers
 
         }
 
-        // GET: Projects/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Projects/Archive/5
+        public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            int companyId = User.Identity.GetCompanyId().Value;
+            var project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
+
+
             if (project == null)
             {
                 return NotFound();
@@ -205,18 +205,16 @@ namespace BugTracks.Controllers
             return View(project);
         }
 
-        // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Projects/Archive/5
+        [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> ArchiveConfirmed(int id)
         {
-            var project = await _context.Projects.FindAsync(id);
-            if (project != null)
-            {
-                _context.Projects.Remove(project);
-            }
+            int companyId = User.Identity.GetCompanyId().Value;
+            var project = await _projectService.GetProjectByIdAsync(id, companyId);
 
-            await _context.SaveChangesAsync();
+            await _projectService.ArchiveProjectAsync(project);
+
             return RedirectToAction(nameof(Index));
         }
 

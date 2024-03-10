@@ -45,8 +45,9 @@
             <th></th>
         </tr>
     </thead>
+   
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -63,9 +64,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ImageFileName)
             </td>
-        @*  <td>
-                @Html.DisplayFor(modelItem => item.ImageFileData)
-            </td> *@
+            <td>
+                @if(item.ImageFile != null)
+                {
+                    <img style="width:60px;height:60px" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
+                }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ImageContentType)
             </td>
@@ -81,7 +85,7 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
             </td>
         </tr>
 }

@@ -9,7 +9,7 @@ namespace BugTracks.Extensions
         {
             Claim claim = ((ClaimsIdentity)identity).FindFirst("CompanyId");
             // Ternary operator (if/else)
-            return(claim != null) ? int.Parse(claim.Value) : null;
+            return (claim != null) ? int.Parse(claim.Value) : null;
         }
     }
 }
