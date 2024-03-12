@@ -27,24 +27,24 @@ namespace BugTracks.Models
         public DateTimeOffset? Updated { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [DisplayName("Archived")]
-        public bool Archived { get; set; }
+        public bool? Archived { get; set; }
 
         [DisplayName("Archived By Project")]
-        public bool ArchivedByProject { get; set; }
+        public bool? ArchivedByProject { get; set; }
 
 
         // Nav Ids
         [DisplayName("Project")]
-        public int ProjectId { get; set; }
+        public int? ProjectId { get; set; }
 
         [DisplayName("Ticket Type")]
-        public int TicketTypeId { get; set; }
+        public int? TicketTypeId { get; set; }
 
         [DisplayName("Ticket Priority")]
-        public int TicketPriorityId { get; set; }
+        public int? TicketPriorityId { get; set; }
 
         [DisplayName("Ticket Status")]
-        public int TicketStatusId { get; set; }
+        public int? TicketStatusId { get; set; }
 
         [DisplayName("Ticket Owner")]
         public string? OwnerUserId { get; set; }
@@ -54,12 +54,12 @@ namespace BugTracks.Models
 
 
         //Navigation Properties
-        public virtual Project Project { get; set; }
-        public virtual TicketType TicketType { get; set; }
-        public virtual TicketPriority TicketPriority { get; set; }
-        public virtual TicketStatus TicketStatus { get; set; }
-        public virtual BTUser OwnerUser { get; set; }
-        public virtual BTUser DeveloperUser { get; set; }
+        public virtual Project? Project { get; set; }
+        public virtual TicketType? TicketType { get; set; }
+        public virtual TicketPriority? TicketPriority { get; set; }
+        public virtual TicketStatus? TicketStatus { get; set; }
+        public virtual BTUser? OwnerUser { get; set; }
+        public virtual BTUser? DeveloperUser { get; set; }
 
 
         public virtual ICollection<TicketComment> Comments { get; set; } = new HashSet<TicketComment>();

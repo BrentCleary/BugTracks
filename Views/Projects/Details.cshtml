@@ -236,7 +236,7 @@
                                                     <td><span class="badge-primary">@ticket.TicketStatus.Name </span></td>
                                                 }
                                                 <td><span class="badge-warning">@ticket.TicketPriority.Name </span></td>
-                                                <td>@ticket.Created.ToString("MM-dd-yyyy")</td>
+                                                <td>@ticket.Created.ToString("MM dd yyyy")</td>
                                                 <td>
                                                     <a class="btn btn-sm btn-outline-info" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fs-5 bi-justify"></i></a>
                                                     @if (ticket.DeveloperUserId == btUser.Id || ticket.OwnerUserId == btUser.Id || (projectManager?.Id == btUser.Id) || User.IsInRole(nameof(Roles.Admin)))
