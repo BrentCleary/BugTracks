@@ -43,6 +43,9 @@ namespace BugTracks.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+
+        // GET: Tickets/MyTickets
+
         public async Task<IActionResult> MyTickets()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -52,6 +55,34 @@ namespace BugTracks.Controllers
 
             return View(tickets);
         }
+
+        // GET: Tickets/AllTickets
+        public async Task<IActionResult> AllTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            List<Ticket> tickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+
+            if(User.IsInRole(nameof(Roles.Developer)) || User.IsInRole(nameof(Roles.Submitter)))
+            {
+                return View(tickets.Where(t => t.Archived == false));
+            }
+            else
+            {
+                return View(tickets);
+            }
+
+        }
+
+        public async Task<IActionResult> ArchivedTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            List<Ticket> tickets = await _ticketService.GetArchivedTicketsAsync(companyId);
+
+            return View(tickets);
+        }
+
 
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)

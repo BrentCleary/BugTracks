@@ -4,6 +4,7 @@ using BugTracks.Models.Enums;
 using BugTracks.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using BugTracks.Extensions;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -331,6 +332,32 @@ namespace BugTracks.Services
             return users.Where(u=>u.CompanyId == companyId).ToList();
 
         }
+
+
+        public async Task<bool> IsAssignedProjectManagerAsync(string userId, int projectId)
+        {
+            try
+            {
+                string projectManagerId = (await GetProjectManagerAsync(projectId))?.Id;
+
+                if (projectManagerId == userId)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
 
         // Returns project by Id, including Member List, checks for userId in list, returns bool
         public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
