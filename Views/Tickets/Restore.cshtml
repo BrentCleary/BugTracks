@@ -1,12 +1,12 @@
 ﻿@model BugTracks.Models.Ticket
 
 @{
-    ViewData["Title"] = "Archive";
+    ViewData["Title"] = "Restore";
 }
 
-<h1>Archive</h1>
+<h1>Restore</h1>
 
-<h3>Are you sure you want to Archive this?</h3>
+<h3>Are you sure you want to Restore this?</h3>
 <div>
     <h4>Ticket</h4>
     <hr />
@@ -79,9 +79,9 @@
         </dd>
     </dl>
     
-    <form asp-action="Archive">
+    <form asp-action="Restore">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Archive" class="btn btn-danger" /> |
+        <input type="submit" value="Restore" class="btn btn-success" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

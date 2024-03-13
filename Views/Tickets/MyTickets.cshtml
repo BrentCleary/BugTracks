@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<BugTracks.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "MyTickets";
 }
 
-<h1>Index</h1>
+<h1>MyTickets</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -86,15 +86,7 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                @if(item.Archived == true)
-                {
-                    <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                }
-                else
-                {
-                    <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }

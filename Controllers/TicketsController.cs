@@ -43,6 +43,16 @@ namespace BugTracks.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> MyTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            BTUser btUser = await _userManager.GetUserAsync(User);
+
+            List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(btUser.Id, companyId);
+
+            return View(tickets);
+        }
+
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -229,6 +239,42 @@ namespace BugTracks.Controllers
             if (ticket != null)
             {
                 await _ticketService.ArchiveTicketAsync(ticket);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // GET: Tickets/Restore/5
+        public async Task<IActionResult> Restore(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return View(ticket);
+        }
+
+        // POST: Tickets/Restore/5
+        [HttpPost, ActionName("Restore")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RestoreConfirmed(int id)
+        {
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id);
+
+
+            if (ticket != null)
+            {
+                ticket.Archived = false;
+                await _ticketService.UpdateTicketAsync(ticket);
             }
 
             return RedirectToAction(nameof(Index));

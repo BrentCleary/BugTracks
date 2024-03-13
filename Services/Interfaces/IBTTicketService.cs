@@ -28,5 +28,7 @@ namespace BugTracks.Services.Interfaces
         public Task<int?> LookupTicketPriorityIdAsync(string priorityName);
         public Task<int?> LookupTicketStatusIdAsync(string statusName);
         public Task<int?> LookupTicketTypeIdAsync(string typeName);
+        public Task RestoreTicketAsync(Ticket ticket);
+
     }
 }
