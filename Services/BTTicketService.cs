@@ -35,7 +35,7 @@ namespace BugTracks.Services
             }
         }
 
-        public async Task ArchiveTicketAsync(Ticket ticket)
+		public async Task ArchiveTicketAsync(Ticket ticket)
         {
             try
             {
@@ -49,6 +49,25 @@ namespace BugTracks.Services
                 throw;
             }
         }
+
+        #region AddTicketComment
+        public async Task AddTicketCommentAsync(TicketComment ticketComment)
+        {
+            try
+            {
+                await _context.TicketsComments.AddAsync(ticketComment);
+                _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        } 
+        #endregion
+
 
         public async Task AssignTicketAsync(int ticketId, string userId)
         {
@@ -283,7 +302,10 @@ namespace BugTracks.Services
                                      .Include(t => t.TicketPriority)
                                      .Include(t => t.TicketStatus)
                                      .Include(t => t.TicketType)
-                                     .FirstOrDefaultAsync(t => t.Id == ticketId);
+									 .Include(t => t.Comments)
+									 .Include(t => t.Attachments)
+									 .Include(t => t.History)
+									 .FirstOrDefaultAsync(t => t.Id == ticketId);
             }
             catch (Exception ex)
             {
