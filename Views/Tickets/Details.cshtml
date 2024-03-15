@@ -139,6 +139,24 @@
 								@* Refer to the Ticket Attachments document for this section *@
 
 								@* Ticket attachments part 1 here *@
+								<div class="row clearfix">
+									<div>
+										<form asp-action="AddTicketAttachment" asp-controller="Tickets" enctype="multipart/form-data" method="post">
+											<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+											<input type="hidden" asp-for="@Model.Id" name="TicketId">
+											<div class="media-body ml-3">
+												<label>
+													Description
+													<input name="Description" type="text" class="form-control" />
+												</label><br />
+												<label class="btn btn-outline-primary btn-sm">
+													<input name="FormFile" type="file" class="form-control-file" />
+												</label>
+												<button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
+											</div>
+										</form>
+									</div>
+								</div>
 
 
 								@* Ticket attachments part 2 here *@

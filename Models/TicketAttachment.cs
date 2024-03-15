@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using BugTracks.Extensions;
+using Microsoft.Identity.Client;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,12 +20,14 @@ namespace BugTracks.Models
         [DisplayName("Team Member")]
         public string UserId { get; set; }
 
-
         [DisplayName("File Description")]
         public string Description { get; set; }
 
         [NotMapped]
+        [Display(Name ="Select a File")]
         [DataType(DataType.Upload)]
+        [MaxFileSize(1024 * 1024)]
+        [AllowedExtensions(new string[] {".jpg", ".png", ".doc", ".xls", ".xlsx", ".pdf"} )]
         public IFormFile FormFile { get; set; }
 
         [DisplayName("File Name")]

@@ -65,18 +65,35 @@ namespace BugTracks.Services
                 throw;
             }
 
-        } 
-        #endregion
+        }
+		#endregion
 
+		#region AddTicketAttachmentAsync
+		public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+        {
+            try
+            {
+                await _context.AddAsync(ticketAttachment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
 
-        public async Task AssignTicketAsync(int ticketId, string userId)
+                throw;
+            }
+        }
+
+		#endregion
+
+		#region AssignTicketAsync
+		public async Task AssignTicketAsync(int ticketId, string userId)
         {
 
-            Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(t=>t.Id == ticketId);
+            Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
 
             try
             {
-                if(ticket != null)
+                if (ticket != null)
                 {
                     try
                     {
@@ -86,19 +103,22 @@ namespace BugTracks.Services
                         await _context.SaveChangesAsync();
 
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         throw;
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
         }
 
-        public async Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
+		#endregion
+
+		#region GetAllTicketsByCompanyAsync
+		public async Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
         {
             try
             {
@@ -118,14 +138,17 @@ namespace BugTracks.Services
 
                 return tickets;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
 
         }
 
-        public async Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
+		#endregion
+
+		#region GetAllTicketsByPriorityAsync
+		public async Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
         {
 
             int priorityId = (await LookupTicketPriorityIdAsync(priorityName)).Value;
@@ -148,22 +171,25 @@ namespace BugTracks.Services
                                                         .ToListAsync();
                 return tickets;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
 
         }
 
-        public async Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
+		#endregion
+
+		#region GetAllTicketsByStatusAsync
+		public async Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
         {
             int statusId = (await LookupTicketStatusIdAsync(statusName)).Value;
 
             try
             {
                 List<Ticket> tickets = await _context.Projects
-                                                     .Where(p=>p.CompanyId == companyId)
-                                                     .SelectMany(p=>p.Tickets)
+                                                     .Where(p => p.CompanyId == companyId)
+                                                     .SelectMany(p => p.Tickets)
                                                         .Include(t => t.Attachments)
                                                         .Include(t => t.Comments)
                                                         .Include(t => t.DeveloperUser)
@@ -182,6 +208,8 @@ namespace BugTracks.Services
                 throw;
             }
         }
+
+        #endregion
 
         public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
         {
@@ -409,21 +437,26 @@ namespace BugTracks.Services
 
         }
 
-        public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
+		#region LookupTicketPriorityIdAsync
+		public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {
             try
             {
-                TicketPriority priority = await _context.TicketPriorities.FirstOrDefaultAsync(p=>p.Name == priorityName);
+                TicketPriority priority = await _context.TicketPriorities.FirstOrDefaultAsync(p => p.Name == priorityName);
                 return priority?.Id;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
         }
 
-        public async Task<int?> LookupTicketStatusIdAsync(string statusName)
-        {
+		#endregion
+
+		#region LookupTicketStatusIdAsync
+		public async Task<int?> LookupTicketStatusIdAsync(string statusName)
+
+	        {
             try
             {
                 TicketStatus status = await _context.TicketsStatuses.FirstOrDefaultAsync(s => s.Name == statusName);
@@ -434,21 +467,26 @@ namespace BugTracks.Services
                 throw;
             }
         }
+		#endregion
 
-        public async Task<int?> LookupTicketTypeIdAsync(string typeName)
+		#region LookupTicketTypeIdAsync
+		public async Task<int?> LookupTicketTypeIdAsync(string typeName)
         {
             try
             {
                 TicketType type = await _context.TicketTypes.FirstOrDefaultAsync(t => t.Name == typeName);
                 return type?.Id;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
         }
 
-        public async Task RestoreTicketAsync(Ticket ticket)
+		#endregion
+
+		#region RestoreTicketAsync
+		public async Task RestoreTicketAsync(Ticket ticket) 
         {
             try
             {
@@ -462,8 +500,10 @@ namespace BugTracks.Services
                 throw;
             }
         }
+		#endregion
 
-        public async Task UpdateTicketAsync(Ticket ticket)
+		#region UpdateTicketAsync
+		public async Task UpdateTicketAsync(Ticket ticket)
         {
             try
             {
@@ -477,5 +517,12 @@ namespace BugTracks.Services
             }
 
         }
-    }
+
+        #endregion
+
+        public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
