@@ -11,8 +11,7 @@ namespace BugTracks.Extensions
 		}
 
 
-		protected override ValidationResult IsValid(
-		object value, ValidationContext validationContext)
+		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
 		{
 			var file = value as IFormFile;
 			if (file != null)
@@ -22,7 +21,6 @@ namespace BugTracks.Extensions
 					return new ValidationResult(GetErrorMessage());
 				}
 			}
-
 
 			return ValidationResult.Success;
 		}
@@ -43,8 +41,7 @@ namespace BugTracks.Extensions
 		}
 
 
-		protected override ValidationResult IsValid(
-		object value, ValidationContext validationContext)
+		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
 		{
 			var file = value as IFormFile;
 			if (file != null)

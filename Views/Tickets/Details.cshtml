@@ -147,10 +147,10 @@
 											<div class="media-body ml-3">
 												<label>
 													Description
-													<input name="Description" type="text" class="form-control" />
+													<input asp-for="@Model.Attachments.FirstOrDefault().Description" name="Description" type="text" class="form-control" />
 												</label><br />
 												<label class="btn btn-outline-primary btn-sm">
-													<input name="FormFile" type="file" class="form-control-file" />
+													<input asp-for="@Model.Attachments.FirstOrDefault().FormFile" name="FormFile" type="file" class="form-control-file" />
 												</label>
 												<button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
 											</div>
@@ -160,6 +160,28 @@
 
 
 								@* Ticket attachments part 2 here *@
+								<hr />
+								<h6>Attachments</h6>
+								<div class="container">
+									<div class="row">
+										@foreach (TicketAttachment item in Model.Attachments)
+										{
+											<div class="col col-sm-2">
+												<a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
+													<div class="icon">
+														<img src="@FileService.GetFileIcon(item.FileName)" style="height:50px;width:50px" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="@item.FileName" />
+													</div>
+												</a>
+												<div style="font-size:x-small">
+													<div class="file-name">
+														<strong>@item.Description</strong>
+													</div>
+													<small>Size: @FileService.FormatFileSize(item.FileData.Length) </small>
+												</div>
+											</div>
+										}
+									</div>
+								</div>
 
 							</div>
 							<div class="card-footer">

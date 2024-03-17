@@ -27,7 +27,7 @@ namespace BugTracks.Models
         [Display(Name ="Select a File")]
         [DataType(DataType.Upload)]
         [MaxFileSize(1024 * 1024)]
-        [AllowedExtensions(new string[] {".jpg", ".png", ".doc", ".xls", ".xlsx", ".pdf"} )]
+        [AllowedExtensions(new string[] {".jpg", ".png", ".doc", ".docx", ".xls", ".xlsx", ".pdf"} )]
         public IFormFile FormFile { get; set; }
 
         [DisplayName("File Name")]
@@ -40,7 +40,7 @@ namespace BugTracks.Models
 
 
         // Navigation Properties
-        public virtual Ticket Ticket { get; set; }
-        public virtual BTUser User { get; set; }  
+        public virtual Ticket? Ticket { get; set; }
+        public virtual BTUser? User { get; set; }  
     }
 }

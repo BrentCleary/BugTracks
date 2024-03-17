@@ -342,7 +342,23 @@ namespace BugTracks.Services
 
         }
 
-        public async Task<BTUser> GetTicketDeveloperAsync(int ticketId, int companyId)
+		public async Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId)
+		{
+			try
+			{
+				TicketAttachment ticketAttachment = await _context.TicketAttachments
+																  .Include(t => t.User)
+																  .FirstOrDefaultAsync(t => t.Id == ticketAttachmentId);
+				return ticketAttachment;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		public async Task<BTUser> GetTicketDeveloperAsync(int ticketId, int companyId)
         {
             BTUser developer = new();
 
@@ -520,9 +536,5 @@ namespace BugTracks.Services
 
         #endregion
 
-        public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
