@@ -278,7 +278,7 @@ namespace BugTracks.Controllers
 				ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
 				ticketAttachment.FileContentType = ticketAttachment.FormFile.ContentType;
 
-				ticketAttachment.Created = DateTimeOffset.Now;
+				ticketAttachment.Created = DateTimeOffset.UtcNow;
 				ticketAttachment.UserId = _userManager.GetUserId(User);
 
 				await _ticketService.AddTicketAttachmentAsync(ticketAttachment);

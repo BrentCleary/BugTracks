@@ -18,10 +18,10 @@ namespace BugTracks.Models
         public DateTimeOffset Created { get; set; } = new DateTimeOffset(new DateTime(2022, 8, 20), new TimeSpan(0, 0, 0));
 
         [DisplayName("Team Member")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         [DisplayName("File Description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [NotMapped]
         [Display(Name ="Select a File")]
@@ -31,9 +31,9 @@ namespace BugTracks.Models
         public IFormFile FormFile { get; set; }
 
         [DisplayName("File Name")]
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
         
-        public byte[] FileData { get; set; }
+        public byte[]? FileData { get; set; }
         
         [DisplayName("File Extension")]
         public string? FileContentType { get; set; }

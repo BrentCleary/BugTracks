@@ -209,9 +209,10 @@ namespace BugTracks.Services
             }
         }
 
-        #endregion
+		#endregion
 
-        public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
+		#region GetAllTicketsByTypeAsync
+		public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
         {
             int typeId = (await LookupTicketTypeIdAsync(typeName)).Value;
 
@@ -239,14 +240,17 @@ namespace BugTracks.Services
             }
         }
 
-        public async Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
+		#endregion
+
+		#region GetArchivedTicketsAsync
+		public async Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
         {
             List<Ticket> tickets = new();
 
             try
             {
                 tickets = (await GetAllTicketsByCompanyAsync(companyId))
-                                                .Where(t=>t.Archived == true).ToList();
+                                                .Where(t => t.Archived == true).ToList();
 
                 return tickets;
             }
@@ -256,22 +260,28 @@ namespace BugTracks.Services
             }
         }
 
-        public async Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
+		#endregion
+
+		#region GetProjectTicketsByPriorityAsync
+		public async Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
         {
             List<Ticket> tickets = new();
 
             try
             {
-                tickets = (await GetAllTicketsByPriorityAsync(companyId, priorityName)).Where(t=>t.ProjectId == projectId).ToList();
+                tickets = (await GetAllTicketsByPriorityAsync(companyId, priorityName)).Where(t => t.ProjectId == projectId).ToList();
                 return tickets;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
         }
 
-        public async Task<List<Ticket>> GetProjectTicketsByRoleAsync(string role, string userId, int projectId, int companyId)
+		#endregion
+
+		#region GetProjectTicketsByRoleAsync
+		public async Task<List<Ticket>> GetProjectTicketsByRoleAsync(string role, string userId, int projectId, int companyId)
         {
             List<Ticket> tickets = new();
 
@@ -280,12 +290,14 @@ namespace BugTracks.Services
                 tickets = (await GetTicketsByRoleAsync(role, userId, companyId)).Where(t => t.ProjectId == projectId).ToList();
                 return tickets;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
 
         }
+
+        #endregion
 
         public async Task<List<Ticket>> GetProjectTicketsByStatusAsync(string statusName, int companyId, int projectId)
         {
