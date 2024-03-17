@@ -3,26 +3,34 @@ using BugTracks.Models;
 using BugTracks.Services.Interfaces;
 using BugTracks.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BugTracks.Services
 {
     public class BTTicketService : IBTTicketService
     {
-        private readonly ApplicationDbContext _context;
+        #region Properties
         private readonly IBTRolesService _rolesService;
+        private readonly ApplicationDbContext _context;
         private readonly IBTProjectService _projectService;
-        
-        public BTTicketService(ApplicationDbContext context, 
-                               IBTRolesService rolesService,
-                               IBTProjectService projectService) 
+        #endregion        
+
+        #region Constructor
+        public BTTicketService(ApplicationDbContext context,
+
+                       IBTProjectService projectService) 
         { 
             _context = context;
             _rolesService = rolesService;
             _projectService = projectService;
         }
+		#endregion                               IBTRolesService rolesService,
 
-        public async Task AddNewTicketAsync(Ticket ticket)
+		#region AddNewTicketAsync
+		public async Task AddNewTicketAsync(Ticket ticket)
         {
+
             try
             {
                 _context.Add(ticket);
@@ -34,7 +42,9 @@ namespace BugTracks.Services
                 throw;
             }
         }
+		#endregion
 
+		#region ArchiveTicketAsync
 		public async Task ArchiveTicketAsync(Ticket ticket)
         {
             try
@@ -49,6 +59,8 @@ namespace BugTracks.Services
                 throw;
             }
         }
+
+        #endregion
 
         #region AddTicketComment
         public async Task AddTicketCommentAsync(TicketComment ticketComment)
@@ -464,6 +476,22 @@ namespace BugTracks.Services
 
 
         }
+
+        public async Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId)
+		{
+			List<Ticket> tickets = new();
+
+			try
+			{
+				tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).ToList();
+				return tickets;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+		}
 
 		#region LookupTicketPriorityIdAsync
 		public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
