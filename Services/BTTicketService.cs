@@ -18,14 +18,14 @@ namespace BugTracks.Services
 
         #region Constructor
         public BTTicketService(ApplicationDbContext context,
-
-                       IBTProjectService projectService) 
+                               IBTRolesService rolesService,
+                               IBTProjectService projectService) 
         { 
             _context = context;
             _rolesService = rolesService;
             _projectService = projectService;
         }
-		#endregion                               IBTRolesService rolesService,
+		#endregion                               
 
 		#region AddNewTicketAsync
 		public async Task AddNewTicketAsync(Ticket ticket)
@@ -254,7 +254,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region GetArchivedTicketsAsync
+		#region Get Archived Tickets Async
 		public async Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
         {
             List<Ticket> tickets = new();
@@ -274,7 +274,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region GetProjectTicketsByPriorityAsync
+		#region Get Project Tickets By Priority Async
 		public async Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
         {
             List<Ticket> tickets = new();
@@ -292,7 +292,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region GetProjectTicketsByRoleAsync
+		#region Get Project Tickets By Role Async
 		public async Task<List<Ticket>> GetProjectTicketsByRoleAsync(string role, string userId, int projectId, int companyId)
         {
             List<Ticket> tickets = new();
@@ -493,7 +493,7 @@ namespace BugTracks.Services
 
 		}
 
-		#region LookupTicketPriorityIdAsync
+		#region Lookup Ticket Priority Id Async
 		public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {
             try
@@ -509,7 +509,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region LookupTicketStatusIdAsync
+		#region Lookup Ticket Status Id Async
 		public async Task<int?> LookupTicketStatusIdAsync(string statusName)
 
 	        {
@@ -525,7 +525,7 @@ namespace BugTracks.Services
         }
 		#endregion
 
-		#region LookupTicketTypeIdAsync
+		#region Lookup Ticket Type Id Async
 		public async Task<int?> LookupTicketTypeIdAsync(string typeName)
         {
             try
@@ -541,7 +541,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region RestoreTicketAsync
+		#region Restore Ticket Async
 		public async Task RestoreTicketAsync(Ticket ticket) 
         {
             try
@@ -558,7 +558,7 @@ namespace BugTracks.Services
         }
 		#endregion
 
-		#region UpdateTicketAsync
+		#region Update Ticket Async
 		public async Task UpdateTicketAsync(Ticket ticket)
         {
             try
