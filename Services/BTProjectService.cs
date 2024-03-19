@@ -285,6 +285,32 @@ namespace BugTracks.Services
             throw new NotImplementedException();
         }
 
+
+        public async Task<List<Project>> GetUnassignedProjectAsync(int companyId)
+        {
+            List<Project> result = new();
+            List<Project> projects = new();
+
+            try
+            {
+                projects = await _context.Projects
+                                         .Include(p => p.ProjectPriority)
+                                         .Where(p => p.CompanyId == companyId).ToListAsync();
+
+                foreach(Project project in projects)
+                {
+                    if()
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         public async Task<List<Project>> GetUserProjectsAsync(string userId)
         {
             try
