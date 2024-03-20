@@ -65,7 +65,7 @@
                 @Html.DisplayFor(modelItem => item.ImageFileName)
             </td>
             <td>
-                @if(item.ImageFile != null)
+                @if(item.ImageFileData != null)
                 {
                     <img style="width:60px;height:60px" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
                 }
