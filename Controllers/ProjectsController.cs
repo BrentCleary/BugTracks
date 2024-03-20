@@ -52,6 +52,7 @@ namespace BugTracks.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+
         public async Task<IActionResult> MyProjects()
         {
             string userId = _userManager.GetUserId(User);
@@ -63,7 +64,7 @@ namespace BugTracks.Controllers
 
 
         // All Projects
-        public async Task<IActionResult> ALLProjects()
+        public async Task<IActionResult> AllProjects()
         {
 
             List<Project> projects = new();
@@ -106,6 +107,19 @@ namespace BugTracks.Controllers
         }
 
 
+        public async Task<IActionResult> AssignPM(int projectId)
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            AssignPMViewModel model = new();
+
+            model.Project = await _projectService.GetProjectByIdAsync(projectId, companyId);
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(Roles.ProjectManager), companyId), "Id", "FullName");
+
+            return View(model);
+
+        }
+
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -126,6 +140,7 @@ namespace BugTracks.Controllers
             return View(project);
         }
 
+
         // GET: Projects/Create
         public async Task<IActionResult> Create()
         {
@@ -141,6 +156,7 @@ namespace BugTracks.Controllers
             
             return View(model);
         }
+
 
         // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -186,6 +202,7 @@ namespace BugTracks.Controllers
             return RedirectToAction("Create");
         }
 
+
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -204,6 +221,7 @@ namespace BugTracks.Controllers
 
             return View(model);
         }
+
 
         // POST: Projects/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -246,6 +264,7 @@ namespace BugTracks.Controllers
 
         }
 
+
         // GET: Projects/Archive/5
         public async Task<IActionResult> Archive(int? id)
         {
@@ -265,6 +284,7 @@ namespace BugTracks.Controllers
 
             return View(project);
         }
+
 
         // POST: Projects/Archive/5
         [HttpPost, ActionName("Archive")]
@@ -299,6 +319,7 @@ namespace BugTracks.Controllers
 
             return View(project);
         }
+
 
         // POST: Projects/Restore/5
         [HttpPost, ActionName("Restore")]
