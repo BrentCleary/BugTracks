@@ -100,9 +100,9 @@ namespace BugTracks.Controllers
 
             List<Project> projects = new();
 
-            projects = await _projectService.
+            projects = await _projectService.GetUnassignedProjectsAsync(companyId);
 
-            return View();
+            return View(projects);
         }
 
 

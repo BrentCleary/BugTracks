@@ -286,7 +286,9 @@ namespace BugTracks.Services
         }
 
 
-        public async Task<List<Project>> GetUnassignedProjectAsync(int companyId)
+        // Unassigned is in reference to ProjectManager Role
+        #region Get Unassigned Projects
+        public async Task<List<Project>> GetUnassignedProjectsAsync(int companyId)
         {
             List<Project> result = new();
             List<Project> projects = new();
@@ -297,9 +299,13 @@ namespace BugTracks.Services
                                          .Include(p => p.ProjectPriority)
                                          .Where(p => p.CompanyId == companyId).ToListAsync();
 
-                foreach(Project project in projects)
+                foreach (Project project in projects)
                 {
-                    if()
+                    // If Count == 0, statement is true, and project has no ProjectManager
+                    if ((await GetProjectMembersByRoleAsync(project.Id, nameof(Roles.ProjectManager))).Count == 0)
+                    {
+                        result.Add(project);
+                    }
                 }
 
             }
@@ -308,23 +314,27 @@ namespace BugTracks.Services
 
                 throw;
             }
+
+            return result;
         }
 
+        #endregion
 
+        #region Get User Projects
         public async Task<List<Project>> GetUserProjectsAsync(string userId)
         {
             try
             {
                 List<Project> userProjects = (await _context.Users
                     .Include(u => u.Projects)
-                        .ThenInclude(p=>p.Company)
+                        .ThenInclude(p => p.Company)
                     .Include(u => u.Projects)
                         .ThenInclude(p => p.Members)
                     .Include(u => u.Projects)
                         .ThenInclude(p => p.Tickets)
                     .Include(u => u.Projects)
                         .ThenInclude(p => p.Tickets)
-                            .ThenInclude(t=>t.DeveloperUser)
+                            .ThenInclude(t => t.DeveloperUser)
                     .Include(u => u.Projects)
                         .ThenInclude(p => p.Tickets)
                             .ThenInclude(t => t.OwnerUser)
@@ -337,11 +347,11 @@ namespace BugTracks.Services
                     .Include(u => u.Projects)
                         .ThenInclude(p => p.Tickets)
                             .ThenInclude(t => t.TicketType)
-                    .FirstOrDefaultAsync(u=>u.Id == userId)).Projects.ToList();
+                    .FirstOrDefaultAsync(u => u.Id == userId)).Projects.ToList();
 
                 return userProjects;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"********** ERROR ********** - Error Getting User Projects List. ----> {ex.Message}");
                 throw;
@@ -350,16 +360,21 @@ namespace BugTracks.Services
 
         }
 
+        #endregion
+
+        #region Get Users Not On Project
         public async Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
         {
 
             List<BTUser> users = await _context.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToListAsync();
-            
-            return users.Where(u=>u.CompanyId == companyId).ToList();
+
+            return users.Where(u => u.CompanyId == companyId).ToList();
 
         }
 
+        #endregion
 
+        #region Is Assigned Project Manager
         public async Task<bool> IsAssignedProjectManagerAsync(string userId, int projectId)
         {
             try
@@ -374,7 +389,7 @@ namespace BugTracks.Services
                 {
                     return false;
                 }
-            
+
             }
             catch (Exception)
             {
@@ -384,14 +399,16 @@ namespace BugTracks.Services
 
         }
 
+        #endregion
 
         // Returns project by Id, including Member List, checks for userId in list, returns bool
+        #region Is User On Project
         public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
         {
             Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
             bool result = false; ;
-            
-            if(project != null)
+
+            if (project != null)
             {
                 // Any Query returns a bool
                 result = project.Members.Any(m => m.Id == userId);
@@ -400,20 +417,23 @@ namespace BugTracks.Services
             return result;
         }
 
+        #endregion
+
         public Task<int> LookupProjectPriorityId(string priorityName)
         {
             throw new NotImplementedException();
         }
 
+        #region Remove Project Manager
         public async Task RemoveProjectManagerAsync(int projectId)
         {
-            Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p =>p.Id == projectId);
+            Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
 
             try
             {
-                foreach(BTUser member in project?.Members)
-                { 
-                    if(await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                foreach (BTUser member in project?.Members)
+                {
+                    if (await _rolesService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
                     {
                         await RemoveUserFromProjectAsync(member.Id, projectId);
                     }
@@ -424,10 +444,13 @@ namespace BugTracks.Services
             {
                 throw;
             }
-            
+
         }
 
-        public async Task RemoveUserFromProjectAsync(string userId, int projectId)
+        #endregion
+
+        #region Remove User From Project
+        public async Task RemoveUserFromProjectAsync(string userId, int projectId) 
         {
 
             try
@@ -455,6 +478,8 @@ namespace BugTracks.Services
             }
 
         }
+        #endregion
+
 
         public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
         {
