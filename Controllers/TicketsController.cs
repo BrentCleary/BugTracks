@@ -275,8 +275,6 @@ namespace BugTracks.Controllers
             if (ModelState.IsValid)
             {
 
-                BTUser btUser = await _userManager.GetUserAsync(User);
-
                 try
                 {
                     ticket.Updated = DateTimeOffset.UtcNow;
@@ -295,6 +293,8 @@ namespace BugTracks.Controllers
                 }
 
                 // TODO: Add Ticket History
+
+
 
                 return RedirectToAction(nameof(Index));
             }
