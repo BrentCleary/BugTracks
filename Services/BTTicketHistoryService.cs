@@ -14,6 +14,7 @@ namespace BugTracks.Services
             _context = context;
         }
 
+        #region Add History (OldTicket, NewTicket, userId)
         public async Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId)
         {
             // NEW TICKET
@@ -149,7 +150,7 @@ namespace BugTracks.Services
                     // Save the TicketHistory DataBaseSet to the database
                     await _context.SaveChangesAsync();
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     throw;
                 }
@@ -158,6 +159,42 @@ namespace BugTracks.Services
 
         }
 
+        #endregion
+
+
+        #region Add History Comment
+        public async Task AddHistoryAsync(Ticket ticketId, string model, string userId)
+        {
+            try
+            {
+                Ticket ticket = await _context.Tickets.FindAsync(ticketId);
+                string description = model.ToLower().Replace("Ticket", "");
+                description = $"New {description} add to ticket: {ticket.Title}";
+
+                TicketHistory history = new()
+                {
+                    TicketId = ticket.Id,
+                    Property = model,
+                    OldValue = "",
+                    NewValue = "",
+                    Created = DateTime.UtcNow,
+                    UserId = userId,
+                    Description = description
+
+                };
+
+                await _context.TicketHistories.AddAsync(history);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        #endregion
 
         public async Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId)
         {

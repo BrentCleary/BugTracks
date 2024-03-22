@@ -343,6 +343,51 @@ namespace BugTracks.Services
 
         }
 
+
+
+        #region Get Ticket As No Tracking
+        public async Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId)
+        {
+            try
+            {
+                return await _context.Tickets
+                                     .Include(t => t.DeveloperUser)
+                                     .Include(t => t.Project)
+                                     .Include(t => t.TicketPriority)
+                                     .Include(t => t.TicketStatus)
+                                     .Include(t => t.TicketType)
+                                     .AsNoTracking()
+                                     .FirstOrDefaultAsync(t => t.Id == ticketId);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        #endregion
+
+
+
+
+        public async Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId)
+		{
+			try
+			{
+				TicketAttachment ticketAttachment = await _context.TicketAttachments
+																  .Include(t => t.User)
+																  .FirstOrDefaultAsync(t => t.Id == ticketAttachmentId);
+				return ticketAttachment;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
         public async Task<Ticket> GetTicketByIdAsync(int ticketId)
         {
             try
@@ -365,22 +410,6 @@ namespace BugTracks.Services
             }
 
         }
-
-		public async Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId)
-		{
-			try
-			{
-				TicketAttachment ticketAttachment = await _context.TicketAttachments
-																  .Include(t => t.User)
-																  .FirstOrDefaultAsync(t => t.Id == ticketAttachmentId);
-				return ticketAttachment;
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
-		}
 
 		public async Task<BTUser> GetTicketDeveloperAsync(int ticketId, int companyId)
         {
