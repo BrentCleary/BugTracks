@@ -19,7 +19,7 @@
 
             <div class="form-group">
                 <label class="control-label">Select Project Manager</label>
-                <select asp-for="PMID" class="form-control" asp-items="@Model.PMList">
+                <select required asp-for="PMID" class="form-control" asp-items="@Model.PMList">
                     <option></option>
                 </select>
 
