@@ -176,10 +176,9 @@ namespace BugTracks.Services
                     Property = model,
                     OldValue = "",
                     NewValue = "",
-                    Created = DateTime.UtcNow,
+                    Created = DateTimeOffset.UtcNow,
                     UserId = userId,
                     Description = description
-
                 };
 
                 await _context.TicketHistories.AddAsync(history);
