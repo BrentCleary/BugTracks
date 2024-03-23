@@ -27,14 +27,15 @@ namespace BugTracks.Controllers
         private readonly IBTLookupService _lookupService;
         private readonly IBTTicketService _ticketService;
         private readonly IBTFileService _fileService;
-
+		private readonly IBTTicketHistoryService _historyService;
 
 		public TicketsController(ApplicationDbContext context,
                                  UserManager<BTUser> userManager,
                                  IBTProjectService projectService,
                                  IBTLookupService lookupService,
                                  IBTTicketService ticketService,
-								 IBTFileService fileService)
+								 IBTFileService fileService,
+								 IBTTicketHistoryService historyService)
         {
             _context = context;
             _userManager = userManager;
@@ -42,6 +43,7 @@ namespace BugTracks.Controllers
             _lookupService = lookupService;
             _ticketService = ticketService;
 			_fileService = fileService;
+			_historyService = historyService;
 		}
 
         // GET: Tickets
@@ -275,6 +277,9 @@ namespace BugTracks.Controllers
             if (ModelState.IsValid)
             {
 
+                BTUser user = await _userManager.GetUserAsync(User);
+                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+
                 try
                 {
                     ticket.Updated = DateTimeOffset.UtcNow;
@@ -292,11 +297,12 @@ namespace BugTracks.Controllers
                     }
                 }
 
-                // TODO: Add Ticket History
+				// TODO: Add Ticket History
+				Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
 
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, user.Id);
 
-
-                return RedirectToAction(nameof(Index));
+				return RedirectToAction(nameof(Index));
             }
 
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);

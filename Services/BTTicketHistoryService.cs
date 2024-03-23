@@ -158,12 +158,11 @@ namespace BugTracks.Services
             }
 
         }
-
         #endregion
 
 
         #region Add History Comment
-        public async Task AddHistoryAsync(Ticket ticketId, string model, string userId)
+        public async Task AddHistoryAsync(int ticketId, string model, string userId)
         {
             try
             {
@@ -194,9 +193,9 @@ namespace BugTracks.Services
             }
         }
 
-        #endregion
+		#endregion
 
-        public async Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId)
+		public async Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId)
         {
             try
             {
