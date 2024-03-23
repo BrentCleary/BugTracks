@@ -351,14 +351,19 @@ namespace BugTracks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Comment")] TicketComment ticketComment)
         {
+
             if (ModelState.IsValid)
             {
+
                 try
                 {
                     ticketComment.UserId = _userManager.GetUserId(User);
                     ticketComment.Created = DateTimeOffset.UtcNow;
 
                     await _ticketService.AddTicketCommentAsync(ticketComment);
+
+                    //Add history
+                    await _historyService.AddHistoryAsync(ticketComment.TicketId, nameof(TicketComment), ticketComment.UserId);
                 }
                 catch (Exception)
                 {
@@ -379,15 +384,30 @@ namespace BugTracks.Controllers
 
 			if (ModelState.IsValid && ticketAttachment.FormFile != null)
 			{
-				ticketAttachment.FileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
-				ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
-				ticketAttachment.FileContentType = ticketAttachment.FormFile.ContentType;
+                try
+                {
+                    ticketAttachment.FileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
+                    ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
+                    ticketAttachment.FileContentType = ticketAttachment.FormFile.ContentType;
 
-				ticketAttachment.Created = DateTimeOffset.UtcNow;
-				ticketAttachment.UserId = _userManager.GetUserId(User);
+                    ticketAttachment.Created = DateTimeOffset.UtcNow;
+                    ticketAttachment.UserId = _userManager.GetUserId(User);
 
-				await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
+                    await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
+
+                    // Add History
+                    await _historyService.AddHistoryAsync(ticketAttachment.TicketId, nameof(TicketAttachment), ticketAttachment.UserId);
+
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
 				statusMessage = "Success: New attachment added to Ticket.";
+
 			}
 			else
 			{

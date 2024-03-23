@@ -184,7 +184,7 @@
 										@foreach (TicketAttachment item in Model.Attachments)
 										{
 											<div class="col col-sm-2">
-												<a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
+												<a asp-action="ShowFile" target="#" asp-controller="Tickets" asp-route-Id="@item.Id">
 													<div class="icon">
 														<img src="@FileService.GetFileIcon(item.FileName)" style="height:50px;width:50px" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="@item.FileName" />
 													</div>
