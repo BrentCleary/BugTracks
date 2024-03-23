@@ -277,7 +277,7 @@ namespace BugTracks.Controllers
             if (ModelState.IsValid)
             {
 
-                BTUser user = await _userManager.GetUserAsync(User);
+                BTUser btUser = await _userManager.GetUserAsync(User);
                 Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
 
                 try
@@ -300,9 +300,9 @@ namespace BugTracks.Controllers
 				// TODO: Add Ticket History
 				Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
 
-                await _historyService.AddHistoryAsync(oldTicket, newTicket, user.Id);
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, btUser.Id);
 
-				return RedirectToAction(nameof(Index));
+				return RedirectToAction(nameof(AllTickets));
             }
 
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);

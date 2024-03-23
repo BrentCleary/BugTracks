@@ -27,7 +27,7 @@ namespace BugTracks.Services
         }
 		#endregion                               
 
-		#region AddNewTicketAsync
+		#region Add New Ticket Async
 		public async Task AddNewTicketAsync(Ticket ticket)
         {
 
@@ -44,7 +44,7 @@ namespace BugTracks.Services
         }
 		#endregion
 
-		#region ArchiveTicketAsync
+		#region Archive Ticket Async
 		public async Task ArchiveTicketAsync(Ticket ticket)
         {
             try
@@ -62,7 +62,7 @@ namespace BugTracks.Services
 
         #endregion
 
-        #region AddTicketComment
+        #region Add Ticket Comment
         public async Task AddTicketCommentAsync(TicketComment ticketComment)
         {
             try
@@ -80,7 +80,7 @@ namespace BugTracks.Services
         }
 		#endregion
 
-		#region AddTicketAttachmentAsync
+		#region Add Ticket Attachment Async
 		public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
         {
             try
@@ -97,7 +97,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region AssignTicketAsync
+		#region Assign Ticket Async
 		public async Task AssignTicketAsync(int ticketId, string userId)
         {
 
@@ -129,7 +129,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region GetAllTicketsByCompanyAsync
+		#region Get All Tickets By Company Async
 		public async Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
         {
             try
@@ -159,7 +159,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region GetAllTicketsByPriorityAsync
+		#region Get All Tickets By Priority Async
 		public async Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
         {
 
@@ -192,7 +192,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region GetAllTicketsByStatusAsync
+		#region Get All Tickets By Status Async
 		public async Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
         {
             int statusId = (await LookupTicketStatusIdAsync(statusName)).Value;
@@ -223,7 +223,7 @@ namespace BugTracks.Services
 
 		#endregion
 
-		#region GetAllTicketsByTypeAsync
+		#region Get All Tickets By Type Async
 		public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
         {
             int typeId = (await LookupTicketTypeIdAsync(typeName)).Value;
@@ -311,39 +311,43 @@ namespace BugTracks.Services
 
         #endregion
 
+        #region Get Project Tickets By Status Async
         public async Task<List<Ticket>> GetProjectTicketsByStatusAsync(string statusName, int companyId, int projectId)
         {
             List<Ticket> tickets = new();
 
             try
             {
-                tickets = (await GetAllTicketsByStatusAsync(companyId, statusName)).Where(t=>t.ProjectId == projectId).ToList();
+                tickets = (await GetAllTicketsByStatusAsync(companyId, statusName)).Where(t => t.ProjectId == projectId).ToList();
 
                 return tickets;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
         }
 
+        #endregion
+
+        #region Get Project Tickets By Type Async
         public async Task<List<Ticket>> GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId)
         {
             List<Ticket> tickets = new();
-            
+
             try
             {
-                tickets = (await GetAllTicketsByTypeAsync(companyId, typeName)).Where(t=>t.ProjectId == projectId).ToList();
+                tickets = (await GetAllTicketsByTypeAsync(companyId, typeName)).Where(t => t.ProjectId == projectId).ToList();
                 return tickets;
             }
-            catch( Exception )
+            catch (Exception)
             {
                 throw;
             }
 
         }
 
-
+        #endregion
 
         #region Get Ticket As No Tracking
         public async Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId)
@@ -368,9 +372,6 @@ namespace BugTracks.Services
         }
 
         #endregion
-
-
-
 
         public async Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId)
 		{
@@ -506,24 +507,27 @@ namespace BugTracks.Services
 
         }
 
+        #region Get Unassigned Tickets
         public async Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId)
-		{
-			List<Ticket> tickets = new();
+        {
+            List<Ticket> tickets = new();
 
-			try
-			{
-				tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).ToList();
-				return tickets;
-			}
-			catch (Exception)
-			{
-				throw;
-			}
+            try
+            {
+                tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).ToList();
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
-		}
+        }
 
-		#region Lookup Ticket Priority Id Async
-		public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
+        #endregion
+
+        #region Lookup Ticket Priority Id Async
+        public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {
             try
             {
