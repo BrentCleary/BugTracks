@@ -15,9 +15,11 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Identity;
 using BugTracks.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracks.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly IBTRolesService _rolesService;
@@ -73,6 +75,7 @@ namespace BugTracks.Controllers
         }
 
 
+
         // Archived Projects
         public async Task<IActionResult> ArchivedProjects()
         {
@@ -84,6 +87,9 @@ namespace BugTracks.Controllers
         }
 
 
+
+        // Unassigned Project
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> UnassignedProjects()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -96,7 +102,9 @@ namespace BugTracks.Controllers
         }
 
 
+
         // GET: Assign PM
+        [Authorize(Roles="Admin")]
         [HttpGet]
         public async Task<IActionResult> AssignPM(int projectId)
         {
@@ -112,6 +120,7 @@ namespace BugTracks.Controllers
         }
 
         //POST: Assign PM
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignPM(AssignPMViewModel model)
@@ -129,6 +138,7 @@ namespace BugTracks.Controllers
 
 
         // GET: Assign Members
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpGet]
         public async Task<IActionResult> AssignMembers(int id)
         {
@@ -150,6 +160,7 @@ namespace BugTracks.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignMembers(ProjectMembersViewModel model)
@@ -178,6 +189,7 @@ namespace BugTracks.Controllers
         }
 
 
+
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -199,7 +211,9 @@ namespace BugTracks.Controllers
         }
 
 
+
         // GET: Projects/Create
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Create()
         {
             // Get CompanyId
@@ -215,10 +229,8 @@ namespace BugTracks.Controllers
             return View(model);
         }
 
-
         // POST: Projects/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AddProjectWithPMViewModel model)
@@ -261,7 +273,9 @@ namespace BugTracks.Controllers
         }
 
 
+
         // GET: Projects/Edit/5
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Edit(int? id)
         {
             // Get CompanyId
@@ -280,10 +294,8 @@ namespace BugTracks.Controllers
             return View(model);
         }
 
-
         // POST: Projects/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AddProjectWithPMViewModel model)
@@ -328,7 +340,9 @@ namespace BugTracks.Controllers
         }
 
 
+
         // GET: Projects/Archive/5
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
@@ -348,8 +362,8 @@ namespace BugTracks.Controllers
             return View(project);
         }
 
-
         // POST: Projects/Archive/5
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ArchiveConfirmed(int id)
@@ -363,7 +377,9 @@ namespace BugTracks.Controllers
         }
 
 
+
         // GET: Projects/Restore/5
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null)
@@ -383,7 +399,6 @@ namespace BugTracks.Controllers
             return View(project);
         }
 
-
         // POST: Projects/Restore/5
         [HttpPost, ActionName("Restore")]
         [ValidateAntiForgeryToken]
@@ -396,6 +411,7 @@ namespace BugTracks.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
 
 
         private async Task<bool> ProjectExists(int id)
