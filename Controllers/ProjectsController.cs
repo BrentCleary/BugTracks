@@ -266,7 +266,7 @@ namespace BugTracks.Controllers
                 }
 
                 // TODO: Redirect to All Projects
-                return RedirectToAction("Index");
+                return RedirectToAction("AllProjects");
             }
 
             return RedirectToAction("Create");
@@ -319,7 +319,7 @@ namespace BugTracks.Controllers
                         await _projectService.AddProjectManagerAsync(model.PmId, model.Project.Id);
                     }
 
-                    return RedirectToAction(actionName: "Index");
+                    return RedirectToAction(actionName: "AllProjects");
 
                 }
                 catch (DbUpdateConcurrencyException)
@@ -373,7 +373,7 @@ namespace BugTracks.Controllers
             var project = await _projectService.GetProjectByIdAsync(id, companyId);
             await _projectService.ArchiveProjectAsync(project);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllProjects));
         }
 
 
@@ -409,7 +409,7 @@ namespace BugTracks.Controllers
             var project = await _projectService.GetProjectByIdAsync(id, companyId);
             await _projectService.RestoreProjectAsync(project);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllProjects));
         }
 
 

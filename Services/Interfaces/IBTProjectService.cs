@@ -14,7 +14,7 @@ namespace BugTracks.Services.Interfaces
 
         public Task<List<Project>> GetAllProjectsByCompanyAsync(int companyId);
 
-        public Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName);
+        public Task<List<Project>> GetAllProjectsByPriorityAsync(int companyId, string priorityName);
 
         public Task<List<BTUser>> GetAllProjectMembersExceptPMAsync(int projectId);
 
@@ -40,7 +40,7 @@ namespace BugTracks.Services.Interfaces
 
         public Task<bool> IsUserOnProjectAsync(string userId, int projectId);
 
-        public Task<int> LookupProjectPriorityId(string priorityName);
+        public Task<int> LookupProjectPriorityIdAsync(string priorityName);
 
         public Task RemoveProjectManagerAsync(int projectId);
 

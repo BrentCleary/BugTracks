@@ -134,8 +134,6 @@ namespace BugTracks.Services
 
         }
 
-
-
         public async Task<List<Project>> GetAllProjectsByCompanyAsync(int companyId)
         {
             List<Project> result = new List<Project>();
@@ -166,9 +164,13 @@ namespace BugTracks.Services
             return result;
         }
 
-        public Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
+        public async Task<List<Project>> GetAllProjectsByPriorityAsync(int companyId, string priorityName)
         {
-            throw new NotImplementedException();
+            List<Project> projects = await GetAllProjectsByCompanyAsync(companyId);
+            int priorityId = await LookupProjectPriorityIdAsync(priorityName);
+
+			return projects.Where(p => p.ProjectPriorityId == priorityId).ToList();
+
         }
 
         public async Task<List<Project>> GetArchivedProjectsByCompanyAsync(int companyId)
@@ -209,16 +211,25 @@ namespace BugTracks.Services
 
         public async Task<List<BTUser>> GetDevelopersOnProjectAsync(int projectId)
         {
-            throw new NotImplementedException();
-        }
+			List<BTUser> members = new();
+
+			Project project = await _context.Projects
+								.Include(p => p.Members)
+								.FirstOrDefaultAsync(p => p.Id == projectId);
+
+			foreach (BTUser member in project?.Members)
+			{
+				if (await _rolesService.IsUserInRoleAsync(member, Roles.Developer.ToString()))
+				{
+					members.Add(member);
+				}
+			}
+
+			return members;
+		}
 
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
         {
-            //Project project = await _context.Projects
-            //                                .Include(p => p.Tickets)
-            //                                .Include(p => p.Members)
-            //                                .Include(p => p.ProjectPriority)
-            //                                .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
 
             Project project = await _context.Projects
                                             .Include(p => p.Tickets)
@@ -279,14 +290,26 @@ namespace BugTracks.Services
 
         }
 
-
-        public Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId)
+        public async Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId)
         {
-            throw new NotImplementedException();
-        }
+            List<BTUser> members = new();
 
+			Project project = await _context.Projects
+								.Include(p => p.Members)
+								.FirstOrDefaultAsync(p => p.Id == projectId);
 
-        // Unassigned is in reference to ProjectManager Role
+			foreach (BTUser member in project?.Members)
+			{
+				if (await _rolesService.IsUserInRoleAsync(member, Roles.Submitter.ToString()))
+				{
+					members.Add(member);
+				}
+			}
+
+			return members;
+		}
+
+        // Unassigned is in reference to Project Manager Role
         #region Get Unassigned Projects
         public async Task<List<Project>> GetUnassignedProjectsAsync(int companyId)
         {
@@ -417,12 +440,17 @@ namespace BugTracks.Services
             return result;
         }
 
-        #endregion
+		#endregion
 
-        public Task<int> LookupProjectPriorityId(string priorityName)
+		#region Lookup Projec tPriority Id Async
+		public async Task<int> LookupProjectPriorityIdAsync(string priorityName)
         {
-            throw new NotImplementedException();
+            int priorityId = (await _context.ProjectPriorities.FirstOrDefaultAsync(p => p.Name == priorityName)).Id;
+
+            return priorityId;
         }
+
+        #endregion
 
         #region Remove Project Manager
         public async Task RemoveProjectManagerAsync(int projectId)
