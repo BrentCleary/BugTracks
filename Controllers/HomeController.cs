@@ -88,6 +88,7 @@ namespace BugTracks.Controllers
 		}
 
 
+
 		// POST: AmCharts
 		[HttpPost]
 		public async Task<JsonResult> AmCharts()
@@ -122,6 +123,8 @@ namespace BugTracks.Controllers
         {
             return View();
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

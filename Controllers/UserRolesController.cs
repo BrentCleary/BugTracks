@@ -50,6 +50,9 @@ namespace BugTracks.Controllers
 
             return View(model);
         }
+        
+        
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageUserRoles(ManageUserRolesViewModel member)
