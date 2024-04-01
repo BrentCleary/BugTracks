@@ -13,14 +13,21 @@
 
 <div class="container ms-2 me-2 mt-2">
 
-    <h1 class="m-2 mb-5">Archived Projects</h1>
+    <h1 class="m-2 mb-4">Archived Projects</h1>
 
-    @foreach (var item in Model)
+
+    @if(Model.Count() > 0 )
     {
-        <div class="max-height: 50px">
+        
+        @foreach (var item in Model)
+        {
+            <div class="max-height: 50px">
             <div class="row bg-light p-3 mt-3 rounded-2">
-                <div class="row bg-secondary bg-opacity-50 rounded-2 m-2 p-2">
-                    <h4>@item.Name</h4>
+                <div class="row bg-secondary bg-opacity-50 rounded-2 m-2 pt-1">
+                    <div class="d-flex justify-content-between">
+                        <h4>@item.Name</h4>
+                        <h4 class="me-5">@item.Company.Name</h4>
+                    </div>
                 </div>
                 <div class="row">
                     @* Picture *@
@@ -47,22 +54,14 @@
                         </div>
                     </div>
                     <div class="col-2 d-flex flex-column">
-                        <div class="row m-3">
-                            <h5 class="text-bold">@item.Company.Name</h5>
-                        </div>
-                        <div class="row m-3">
-                            <h5>Status</h5>
+                        <div class="row m-3 d-flex align-middle">
                             @if (item.Archived)
                             {
-                                <div class="btn btn-sm btn-outline-danger">
-                                    <button>Archived</button>
-                                </div>
-                                <a class="btn btn-sm btn-outline-secondary" asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-
+                                <div class="btn btn-sm btn-danger">Archived</div>
                             }
                             else
                             {
-                                <div class="btn btn-sm btn-outline-success">Active</div>
+                                <div class="btn btn-sm btn-success">Active</div>
                             }
                         </div>
                     </div>
@@ -101,5 +100,13 @@
             </div>
 
         </div>
+        }
     }
-
+    else
+    {
+        <div class="row bg-secondary bg-opacity-50 rounded-2 m-2 pt-1">
+            <div class="d-flex justify-content-between">
+                <h4>There are currently no Archived Tickets</h4>
+            </div>
+        </div>
+    }
