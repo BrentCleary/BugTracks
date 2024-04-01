@@ -451,7 +451,7 @@ namespace BugTracks.Controllers
                 await _ticketService.ArchiveTicketAsync(ticket);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllTickets));
         }
 
 
@@ -490,7 +490,7 @@ namespace BugTracks.Controllers
                 await _ticketService.UpdateTicketAsync(ticket);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllTickets));
         }
 
 

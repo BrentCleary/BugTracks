@@ -11,110 +11,193 @@
     BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
-<h1>All Projects</h1>
+<div class="container ms-2 me-2 mt-2">
 
-@if(User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
-{
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-}
+    <h1>All Projects</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageFileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageFileData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageContentType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Archived)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectPriority)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-   
-    <tbody>
-        @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageFileName)
-            </td>
-            <td>
-                @if(item.ImageFileData != null)
-                {
-                    <img style="width:60px;height:60px" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageContentType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Archived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Company.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+    @if(User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
 
-                @{
-                    bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id)) ? .Id == btUser.Id;
-                }
+    @foreach (var item in Model) {
+    <div class="max-height: 50px">
+        <div class="row bg-light p-3 mt-3 rounded-2">
+            <div class="row bg-secondary bg-opacity-50 rounded-2 m-2">
+                <h4>@item.Name</h4>
+            </div>
+            <div class="row">
+                @* Picture *@
+                    <div class="col-2 img-fluid col-md-2bg-dark d-flex align-items-center">
+                    @if (item.ImageFileData != null)
+                    {
+                        <img class="img-fluid" @* style="width:200px;height:200px" *@ src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
+                    }
+                </div>
+                @* Description *@
+                <div class="col-2 col-md-4 bg-light">
+                    <h5 class="text-bold">Description</h5>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </div>
+                @* Dates *@
+                <div class="col-2 bg-light d-flex flex-column">
+                    <div class="row rounded-2 bg-dark bg-opacity-10 m-1">
+                        <h5 class="text-bold">Start Date</h5>
+                        <h6>@item.StartDate.ToString("MM/dd/yyyy")</h6>
+                    </div>
+                    <div class="row rounded-2 bg-dark bg-opacity-10 m-1">
+                        <h5 class="text-bold">End Date</h5>
+                        <h6>@item.EndDate.ToString("MM/dd/yyyy")</h6>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="row m-3">
+                        <h5 class="text-bold">@item.Company.Name</h5>
+                    </div>
+                    <div class="row m-3">
+                        <h6>Status</h6>
+                        @if(item.Archived)
+                        {
+                            <div>
+                                <h5 class="bg-danger">Archived</h5>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <h5 class="bg-success">Active</h5>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-2 d-flex flex-column">
 
-                @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
-                {
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
+                            <a asp-action="Details" asp-route-id="@item.Id"><h5>Details</h5></a>
+                    </div>
+
+                    @{
+                        bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == btUser.Id;
+                    }
                     
-                    @if(item.Archived)
+                    <div class="row p-2">
+                        @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
+                        {
+                                <a asp-action="Edit" asp-route-id="@item.Id"><h5>Edit</h5></a>
+                        }
+                    </div>
+
+                    <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
+                        @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
+                        {
+                            @if (item.Archived)
+                            {
+                                <a asp-action="Restore" asp-route-id="@item.Id"><h5>Restore</h5></a>
+                            }
+                            else
+                            {
+                                <a asp-action="Archive" asp-route-id="@item.Id"><h5>Archive</h5></a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    }
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <p class="text-bold">Project Name</p>
+                </th>
+                <th>
+                    <p class="text-bold">Description</p>
+                </th>
+
+                <th>
+                    <p class="text-bold">Start Date</p>
+                </th>
+                <th>
+                    <p class="text-bold">End Date</p>
+                </th>
+                <th>
+                    <p class="text-bold">Project Image</p>
+                </th>
+                <th>
+                    <p class="text-bold">Archived</p>
+                </th>
+                <th>
+                    <p class="text-bold">Company Id</p>
+                </th>
+                <th>
+                    <p class="text-bold">Project Priority</p>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+   
+        <tbody>
+            @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+
+                <td class="text-center">
+                    @if(item.ImageFileData != null)
                     {
-                        <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                        <img style="width:60px;height:60px" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
                     }
-                    else
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Archived)
+                </td>
+               <td>
+                    @Html.DisplayFor(modelItem => item.CompanyId)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+
+                    @{
+                        bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id)) ? .Id == btUser.Id;
+                    }
+
+                    @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
                     {
-                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>               
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    
+                        @if(item.Archived)
+                        {
+                            <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>               
+                        }
                     }
-                }
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+
+</div>
