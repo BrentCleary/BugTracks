@@ -17,6 +17,45 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+@foreach (var item in Model)
+{
+    <div class="card row bg-light p-3 mt-3 rounded-2">
+        <div class="row card-img-top bg-secondary bg-opacity-50 rounded-2 m-2 p-2 " style="height: 50px">
+            <h4> @item.Title</h4>    
+        </div>
+        @* Project Name *@
+        <div class="row">
+            <div class="col-2 card-img-top">
+                <div>Project</div>
+                <div>@item.Project.Name</div>
+            </div>
+        </div>
+        <div class="row">
+            @* Description *@
+            <div class="row">
+                <div class="col-2 card-img-top">
+                    <div></div>
+                    <div>@item.Description</div>
+                </div>
+            </div>
+            @* Created/Updated Times *@
+            <div class="col-2">
+                <div class="row bg-light d-flex flex-column">
+                    <div class="row rounded-2 bg-dark bg-opacity-10 m-2">
+                        <h5 class="text-bold">Start Date</h5>
+                        <h6>@item.Created.ToString("MM/dd/yyyy")</h6>
+                    </div>
+                    <div class="row rounded-2 bg-dark bg-opacity-10 m-2">
+                        <h5 class="text-bold">End Date</h5>
+                        <h6>@item.Updated</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <table class="table">
     <thead>
         <tr>
