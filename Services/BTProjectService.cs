@@ -140,6 +140,7 @@ namespace BugTracks.Services
 
             result = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
                                             .Include(p => p.Members)
+                                            .Include(p => p.Company)
                                             .Include(p => p.Tickets)
                                                 .ThenInclude(t => t.Comments)
                                             .Include(p => p.Tickets)
@@ -179,6 +180,7 @@ namespace BugTracks.Services
             {
                 List<Project> projects = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == true)
                                             .Include(p => p.Members)
+                                            .Include(p => p.Company)
                                             .Include(p => p.Tickets)
                                                 .ThenInclude(t => t.Comments)
                                             .Include(p => p.Tickets)
@@ -320,6 +322,7 @@ namespace BugTracks.Services
             {
                 projects = await _context.Projects
                                          .Include(p => p.ProjectPriority)
+                                         .Include(p => p.Company)
                                          .Where(p => p.CompanyId == companyId).ToListAsync();
 
                 foreach (Project project in projects)
