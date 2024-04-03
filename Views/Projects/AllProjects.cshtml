@@ -11,14 +11,14 @@
     BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
-<div class="container ms-2 me-2 mt-2">
+<div class="container ms-1 me-1 mt-1">
 
     <h1 class="m-2 mb-4">All Projects</h1>
 
     @if(User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
     {
         <p>
-            <a asp-action="Create" class="m-2"><button class="btn btn- btn-outline-primary">NEW PROJECT</button></a>
+            <a asp-action="Create" class="m-2"><button class="btn btn-outline-primary">NEW PROJECT</button></a>
         </p>
     }
 
@@ -27,16 +27,15 @@
         <div class="row bg-light p-3 mt-3 rounded-2">
             <div class="row bg-secondary bg-opacity-50 rounded-2 m-2 pt-1">
                 <div class="d-flex justify-content-between">
-                    <h4>@item.Name</h4>
-                    <h4 class="me-5">@item.Company.Name</h4>
+                    <h4>@item.Name  -  @item.Company.Name</h4>
                 </div>
             </div>
             <div class="row">
                 @* Picture *@
-                    <div class="col-2 img-fluid col-md-2bg-dark d-flex align-items-center">
+                <div class="col-2 img-fluid col-md-2 d-flex align-items-center overflow-hidden" style="width:200px ;height:200px">
                     @if (item.ImageFileData != null)
                     {
-                        <img class="img-fluid" @* style="width:200px;height:200px" *@ src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
+                        <img class="img-fluid" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
                     }
                 </div>
                 @* Description *@
@@ -55,6 +54,7 @@
                         <h6>@item.EndDate.ToString("MM/dd/yyyy")</h6>
                     </div>
                 </div>
+                @* Status *@
                 <div class="col-2 d-flex flex-column">
                     <div class="row m-3 d-flex align-middle">
                         @if (item.Archived)
@@ -67,6 +67,7 @@
                         }
                     </div>
                 </div>
+                @* Actions *@
                 <div class="col-2 d-flex flex-column">
 
                     <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
