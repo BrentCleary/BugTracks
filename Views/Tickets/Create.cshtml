@@ -12,71 +12,70 @@
 <div class="container m-3">
     <div class="row">
 
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-8">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
-            @* Ticket Title *@
-            <div class="row mt-2">
-                <div class="col-8">
-                    <div class="form-group">
-                        <label asp-for="Title" class="form-label"></label>
-                        <input asp-for="Title" class="form-control" />
+                @* Ticket Title *@
+                <div class="row mt-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Title" class="form-label"></label>
+                            <input asp-for="Title" class="form-control" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-4"></div>
-            </div>
 
-            @* Ticket Description *@
-            <div class="row mt-2">
-                <div class="col-8">
-                    <div class="form-group">
-                        <label asp-for="Description" class="form-label"></label>
-                        <textarea asp-for="Description" type="text" class="form-control" rows="3" id="MessageInputField" autofocus></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                @* Ticket Description *@
+                <div class="row mt-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" type="text" class="form-control" rows="3" id="MessageInputField" autofocus></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-4"></div>
-            </div>
 
 
-            @* Ticket Project *@
-            <div class="row mt-2">
-                <div class="col-8">
-                    <div class="form-group">
-                        <label asp-for="ProjectId" class="form-label"></label>
-                        <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
-                        <span asp-validation-for="ProjectId" class="text-danger"></span>
+                @* Ticket Project *@
+                <div class="row mt-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="ProjectId" class="form-label"></label>
+                            <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                            <span asp-validation-for="ProjectId" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            @* Ticket Type and Priority *@
-            <div class="row mt-2">
-                <div class="col-4">
-                    @* PM SelectList for Admins *@
-                    <label asp-for="TicketTypeId" class="control-label"></label>
-                    <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label asp-for="TicketPriorityId" class="control-label"></label>
-                        <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
+                @* Ticket Type and Priority *@
+                <div class="row mt-2">
+                    <div class="col-6">
+                        @* PM SelectList for Admins *@
+                        <label asp-for="TicketTypeId" class="form-label"></label>
+                        <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="TicketPriorityId" class="form-label"></label>
+                            <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
+                        </div>
                     </div>
                 </div>
-                <div class="col-4"></div>
-            </div>
 
-            <div class="row">
-                <div class="form-group mt-3 col-8">
-                    <input type="submit" value="Create" class="btn btn-primary w-100" />
+                <div class="row">
+                    <div class="form-group mt-3 mb-3 col">
+                        <input type="submit" value="Create" class="btn btn-primary w-100" />
+                    </div>
                 </div>
-                <div class="col-4"></div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="col-4"></div>
     </div>
     <div>
-        <a class="btn btn-sm btn-outline-secondary mt-4" asp-action="AllTickets">Back to List</a>
+        <a class="btn btn-sm btn-outline-secondary mt-4 mb-4" asp-action="AllTickets">Back to List</a>
     </div>
 </div>
 
