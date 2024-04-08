@@ -1,4 +1,8 @@
-﻿@{
+﻿@using BugTracks.Areas.Identity.Pages.Account
+
+@model LoginModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -13,12 +17,41 @@
             <h6>Project Management Solutions</h6>
         </div>
     </div>
+
+    @* DemoUser Login *@
+    <div class="text-center">
+        <div class="col-md-4 ms-3 mt-3">
+            <section>
+                <form id="account" method="post">
+                    <h2>Login as a Demo User</h2>
+                    <hr />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" value="demoadmin@bugtracker.com" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" value="Abc&123!" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    </div>
+                    <div>
+                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
     
     @* Logo *@
-    <div class="row">
+    <div class="row text-center">
         <div class="col text-center">
             <img src="~/img/images/logo_edited.png" />
         </div>
     </div>
 
+
+
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
