@@ -30,9 +30,10 @@
                     </label>
                 </div>
                 <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary m-1">Log in</button>
+                    <button class="w-100 btn btn-lg btn-success m-1" onclick="fillLoginForm()">Try The App With A Demo Account</button>
                 </div>
-                <div>
+                <div class="m-1">
                     <p>
                         <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                     </p>
@@ -49,9 +50,7 @@
 
     @* Demo Login *@
     <div class="col-md-4 ms-3 mt-3">
-        <div class="btn btn-success">
-            <button onclick="fillLoginForm()">Try The App With A Demo Account</button>
-        </div>
+        
     </div>
 </div>
 

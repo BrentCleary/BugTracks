@@ -4,6 +4,9 @@
 // Write your JavaScript code.
 
 function fillLoginForm() {
+
+    console.log("FIll LOGIN FORM CLICKED __+_+_+_+_+_+_+_+_+_+")
+
     // Replace these values with your predetermined account information
     var email = "demoadmin@bugtracker.com";
     var password = "Abc&123!";

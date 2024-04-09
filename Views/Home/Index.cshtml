@@ -15,37 +15,6 @@
         </div>
     </div>
 
-    @* DemoUser Login *@
-    <div class="row">
-        <div class="col-md-4 ms-3 mt-3">
-            <section>
-                <form asp-controller="Login" asp-action="OnPostAsync" id="account" method="post">
-                    <h2>Use a local account to log in.</h2>
-                    <hr />
-                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                        <label asp-for="Input.Email" class="form-label">Email</label>
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                        <label asp-for="Input.Password" class="form-label">Password</label>
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                    <div class="checkbox mb-3">
-                        <label asp-for="Input.RememberMe" class="form-label">
-                            <input class="form-check-input" asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
-                    <div>
-                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                    </div>
-                </form>
-            </section>
-        </div>
-    </div>
     
     @* Logo *@
     <div class="row text-center">
@@ -61,22 +30,4 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-    function fillLoginForm() {
-    // Replace these values with your predetermined account information
-    var email = "example@example.com";
-    var password = "password123";
-
-    // Find the email and password fields on the page
-    var emailField = document.getElementById("emailFieldId"); // Replace "emailFieldId" with the actual ID of your email input field
-    var passwordField = document.getElementById("passwordFieldId"); // Replace "passwordFieldId" with the actual ID of your password input field
-
-    // Check if the fields exist
-    if (emailField && passwordField) {
-        // Fill in the email and password fields
-        emailField.value = email;
-        passwordField.value = password;
-    } else {
-        console.error("Email or password field not found.");
-    }
-}
 }
