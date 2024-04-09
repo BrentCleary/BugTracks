@@ -1,5 +1,7 @@
 ﻿@page
 @model PersonalDataModel
+@using BugTracks.Models.Enums
+
 @{
     ViewData["Title"] = "Personal Data";
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
@@ -13,12 +15,25 @@
         <p>
             <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
         </p>
-        <form id="download-data" asp-page="DownloadPersonalData" method="post">
-            <button class="btn btn-primary" type="submit">Download</button>
-        </form>
-        <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
-        </p>
+
+        @if (User.IsInRole(Roles.DemoUser.ToString()))
+        {
+            <form id="download-data" asp-page="" method="post">
+                <button class="btn btn-secondary" type="submit">Download</button>
+            </form>
+            <p>
+                <a id="delete" asp-page="" class="btn btn-secondary">Delete</a>
+            </p>
+        }
+        else
+        {
+            <form id="download-data" asp-page="DownloadPersonalData" method="post">
+                <button class="btn btn-primary" type="submit">Download</button>
+            </form>
+            <p>
+                <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
+            </p>
+        }
     </div>
 </div>
 

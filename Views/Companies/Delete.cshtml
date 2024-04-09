@@ -1,4 +1,5 @@
 ﻿@model BugTracks.Models.Company
+@using BugTracks.Models.Enums
 
 @{
     ViewData["Title"] = "Delete";
@@ -26,8 +27,17 @@
     </dl>
     
     <form asp-action="Delete">
+
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        @if (User.IsInRole(Roles.DemoUser.ToString()))
+        {
+            <p>Delete Company Disable for DemoUsers</p>
+            <input type="submit" value="Delete" class="btn btn-secondary" disabled />
+        }
+        else
+        {
+            <input type="submit" value="Delete" class="btn btn-danger" /> 
+        }|
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
