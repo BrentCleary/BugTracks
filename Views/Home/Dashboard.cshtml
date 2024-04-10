@@ -100,10 +100,10 @@
 						<div class="p-15 text-light">
 							<h3>
 								@(
-															Model.Projects.Count()
-															+ Model.Tickets.Count()
-															+ Model.Members.Count()
-															)
+									Model.Projects.Count()
+									+ Model.Tickets.Count()
+									+ Model.Members.Count()
+									)
 							</h3>
 							<span>Total Data</span>
 						</div>
@@ -114,27 +114,30 @@
 
 		<div class="row gy-2">
 			<div class="col-md-12 col">
-				<div class="row col-cols-4 mt-5 bg-secondary">
-
-					<div class="card col m-1 p-2">
-						<div class="card-body">
-							<h5>Projects by Priority</h5>
+				<div class="row row-cols-12 row-cols-md-4 row-cols-sm-2 mt-5 bg-secondary gy-1">
+					
+					@* Projects By Priority *@
+					<div class="card col-lg-3 col-md-6 col-sm-12 p-1">
+						<div class="card-body text-center">
+							<h5 class="text-center mb-3">Projects by Priority</h5>
 							@* <p>[Google Charts]</p> *@
 							<div id="chart3D"></div>
 						</div>
 					</div>
 
-					<div class="card col m-1 p-2">
-						<div class="card-body">
-							<h5>Project Tickets Count (%)</h5>
+					@* Project Tickets Count *@
+					<div class="card col-lg-3 col-md-6 col-sm-12 p-1">
+						<div class="card-body text-center">
+							<h5 class="text-center mb-3">Project Tickets Count (%)</h5>
 							@* <p>[Google Charts]</p> *@
 							<div id="donut"></div>
 						</div>
 					</div>
 
-					<div class="card col m-1 p-2">
-						<div class="card-body">
-							<h5>Tickets by Priority</h5>
+					@* Tickets By Priority *@
+					<div class="card col-lg-3 col-md-6 col-sm-12 p-1">
+						<div class="card-body text-center">
+							<h5 class="text-center mb-3">Tickets by Priority</h5>
 							@* <p>[Morris Charts]</p> *@
 							<div class="col-md-12">
 								<div id="legend" class="donut-legend" style="font-size:x-small"></div>
@@ -145,9 +148,10 @@
 						</div>
 					</div>
 
-					<div class="card col m-1 p-2">
-						<div class="card-body">
-							<h5>Tickets by Status</h5>
+					@* Tickets By Status *@
+					<div class="card col-lg-3 col-md-6 col-sm-12 p-1">
+						<div class="card-body text-center">
+							<h5 class="text-center mb-3">Tickets by Status</h5>
 							<!-- ChartJS: Pie/Doughnut -->
 							<div class="col-md-12">
 								<!--  Chart.js Canvas Tag -->
@@ -155,6 +159,7 @@
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -354,6 +359,7 @@
 			});
 		}
 	</script>
+
 	<script type="text/javascript">
 		google.load("visualization", "1", { packages: ["corechart"] });
 		google.setOnLoadCallback(drawChart);
@@ -478,6 +484,7 @@
 			options: donutOptions
 		});
 	</script>
+
 	<!-- *** End Chart JS Donut *** -->
 	<!-- *** Begin AM Charts *** -->
 	<!-- Resources -->
