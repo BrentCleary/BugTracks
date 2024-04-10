@@ -27,84 +27,95 @@
             <div class="row bg-secondary bg-opacity-50 rounded-2 m-2 p-1 " style="height: 40px">
                 <h4> <a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id" class="text-decoration-none" style="color:black"><strong>@item.Title</strong></a> - @item.Project.Name</h4>
             </div>
+
             @* Ticket Body *@
-            <div class="row p-1 mb-1 ms-1 me-1 rounded-2">
+            <div class="row ps-4 rounded-2">
+
                 @* Description *@
-                <div class="col-4 bg-white rounded-1 ms-2 p-1">
+                <div class="col-12 col-md-4 bg-white rounded-1 p-1">
                     <p>@item.Description</p>
                 </div>
-                @* Assigned Developer *@
-                <div class="col-2">
-                    <div class="d-flex flex-column text-center mb-2 ms-2 me-2">
-                        <h6>Status</h6>
-                        <div class="btn btn-sm btn-outline-info">@item.TicketStatus.Name</div>
-                    </div>
-                    <div class="row rounded-2 bg-white mt-2 ms-2 me-2 p-2 text-center">
-                        <div>
-                            <h6>Priority</h6>
-                            <h5>@item.TicketPriority.Name</h5>
+
+                @* TicketStatus and Dates *@
+                <div class="col-12 col-md-4 d-flex justify-content-center">
+                    @* Ticket Status *@
+                    <div class="col-6 p-2">
+                        <div class="d-flex flex-column text-center mb-2 ms-2 me-2">
+                            <h6>Status</h6>
+                            <div class="btn btn-sm btn-outline-info">@item.TicketStatus.Name</div>
+                        </div>
+                        <div class="row rounded-2 bg-white mt-2 ms-2 me-2 p-2 text-center">
+                            <div>
+                                <h6>Priority</h6>
+                                <h5>@item.TicketPriority.Name</h5>
+                            </div>
                         </div>
                     </div>
+                    @* Created/Updated Times *@
+                    <div class="col-6">
+                        <div class="row bg-light d-flex flex-column">
+                            <div class="row rounded-2 bg-dark bg-opacity-10 m-2 text-center">
+                                <h6 class="text-bold">Created</h6>
+                                <h5>@item.Created.ToString("MM/dd/yyyy")</h5>
+                            </div>
+                            <div class="row rounded-2 bg-dark bg-opacity-10 m-2 text-center">
+                                <h6 class="text-bold">Updated</h6>
+                                <h5>@item.Updated?.ToString("MM/dd/yyyy")</h5>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                @* Created/Updated Times *@
-                <div class="col-2">
-                    <div class="row bg-light d-flex flex-column">
-                        <div class="row rounded-2 bg-dark bg-opacity-10 m-2 text-center">
-                            <h6 class="text-bold">Created</h6>
-                            <h5>@item.Created.ToString("MM/dd/yyyy")</h5>
-                        </div>
-                        <div class="row rounded-2 bg-dark bg-opacity-10 m-2 text-center">
-                            <h6 class="text-bold">Updated</h6>
-                            <h5>@item.Updated?.ToString("MM/dd/yyyy")</h5>
-                        </div>
-                    </div>
-                </div>
-                @* Status *@
-                <div class="col text-center m-2 align-items-center">
-                    <div class="row text-center m-2">
-                        <div>
-                            @if (item.DeveloperUserId != null)
-                            {
-                                <h6>Lead Developer</h6>
-                                <p>@item.DeveloperUser?.FullName</p>
-                            }
-                            else
-                            {
-                                if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+
+                @* Assign Dev and Actions *@
+                <div class="col-12 col-md-4 d-flex justify-content-center">
+                    @* Assign Developer *@
+                    <div class="col-6 text-center m-2 align-items-center">
+                        <div class="row text-center m-2">
+                            <div>
+                                @if (item.DeveloperUserId != null)
                                 {
-                                    <a class="btn btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@item.Id">Assign Dev</a>
+                                    <h6>Lead Developer</h6>
+                                    <p>@item.DeveloperUser?.FullName</p>
+                                }
+                                else
+                                {
+                                    if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+                                    {
+                                        <a class="btn btn-info" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@item.Id">Assign Dev</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @* Actions *@
+                    <div class="col-6 d-flex flex-column">
+                        @* Details *@
+                        <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        </div>
+                        @* Edit *@
+                        <div class="row p-2">
+
+                            @if (User.IsInRole(nameof(Roles.Admin)) || item.DeveloperUserId == btUser.Id || item.OwnerUserId == btUser.Id || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId.Value))
+                            {
+                                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            }
+                        </div>
+                        @* Archive/Restore *@
+                        <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
+                            @if (User.IsInRole(nameof(Roles.Admin)) || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId.Value))
+                            {
+                                @if (item.Archived == true)
+                                {
+                                    <a class="btn btn-sm btn-outline-secondary" asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-sm btn-outline-secondary" asp-action="Archive" asp-route-id="@item.Id">Archive</a>
                                 }
                             }
                         </div>
-                    </div>
-                </div>
-                @* Actions *@
-                <div class="col-2 d-flex flex-column">
-                    @* Details *@
-                    <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    </div>
-                    @* Edit *@
-                    <div class="row p-2">
-
-                        @if (User.IsInRole(nameof(Roles.Admin)) || item.DeveloperUserId == btUser.Id || item.OwnerUserId == btUser.Id || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId.Value))
-                        {
-                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        }
-                    </div>
-                    @* Archive/Restore *@
-                    <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
-                        @if (User.IsInRole(nameof(Roles.Admin)) || await ProjectService.IsAssignedProjectManagerAsync(btUser.Id, item.ProjectId.Value))
-                        {
-                            @if (item.Archived == true)
-                            {
-                                <a class="btn btn-sm btn-outline-secondary" asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-sm btn-outline-secondary" asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-                            }
-                        }
                     </div>
                 </div>
             </div>
