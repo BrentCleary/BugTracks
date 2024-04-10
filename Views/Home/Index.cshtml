@@ -5,31 +5,36 @@
 
 <div class="container text-center">
     
-    @* Title *@
-    <div class="row text-center m-5 bg-light">
-        <div class="col">
-            <h1>BUG TRACKS</h1>
+    <div class="row">
+
+        @* Title *@
+        <div class="row text-center m-5 bg-light">
+            <div class="col">
+                <h1>BUG TRACKS</h1>
+            </div>
+            <div>
+                <h6>Project Management Solutions</h6>
+            </div>
         </div>
-        <div>
-            <h6>Project Management Solutions</h6>
+
+        @* Live Demo Login *@
+        <div class="row text-center m-5">
+            <div class="col"></div>
+            <a class="col text-light btn btn-lg bg-success  rounded" asp-area="Identity" asp-page="/Account/Login">Click Here to Login with a Live Demo Account</a>
+            <div class="col"></div>
         </div>
+    
+        @* Logo *@
+        <div class="row text-center m-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <img class="img-fluid text-center" src="~/img/images/logo_edited.png" />
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
     </div>
 
-    @* Live Demo Login *@
-    <div class="m-5 row">
-        <div class="col-4"></div>
-        <div class="bg-success col-4 rounded">
-            <a class="dropdown-item text-light btn btn-lg" asp-area="Identity" asp-page="/Account/Login">Click Here to Login with a Live Demo Account</a>
-        </div>
-        <div class="col-4"></div>
-    </div>
-    
-    @* Logo *@
-    <div class="row text-center">
-        <div class="col text-center">
-            <img src="~/img/images/logo_edited.png" />
-        </div>
-    </div>
 
 
 
