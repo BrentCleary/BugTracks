@@ -22,85 +22,98 @@
         </p>
     }
 
-    @foreach (var item in Model) {
-    <div class="max-height: 50px">
-        <div class="row bg-light p-3 mt-3 rounded-2">
-            <div class="row bg-secondary bg-opacity-50 rounded-2 m-2 pt-1">
-                <div class="d-flex justify-content-between">
-                    <h4>@item.Name  -  @item.Company.Name</h4>
-                </div>
-            </div>
-            <div class="row">
-                @* Picture *@
-                <div class="col-2 img-fluid col-md-2 d-flex align-items-center overflow-hidden" style="width:200px ;height:200px">
-                    @if (item.ImageFileData != null)
-                    {
-                        <img class="img-fluid" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
-                    }
-                </div>
-                @* Description *@
-                <div class="col-2 col-md-4 bg-light">
-                    <h5 class="text-bold">Description</h5>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </div>
-                @* Dates *@
-                <div class="col-2 bg-light d-flex flex-column">
-                    <div class="row rounded-2 bg-dark bg-opacity-10 m-2">
-                        <h5 class="text-bold">Start Date</h5>
-                        <h6>@item.StartDate.ToString("MM/dd/yyyy")</h6>
-                    </div>
-                    <div class="row rounded-2 bg-dark bg-opacity-10 m-2">
-                        <h5 class="text-bold">End Date</h5>
-                        <h6>@item.EndDate.ToString("MM/dd/yyyy")</h6>
+    @foreach (var item in Model) 
+    {
+        <div class="max-height: 50px">
+            <div class="row bg-light p-3 mt-3 rounded-2">
+                <div class="row bg-secondary bg-opacity-50 rounded-2 m-2 pt-1">
+                    <div class="d-flex justify-content-between">
+                        <h4>@item.Name  -  @item.Company.Name</h4>
                     </div>
                 </div>
-                @* Status *@
-                <div class="col-2 d-flex flex-column">
-                    <div class="row m-3 d-flex align-middle">
-                        @if (item.Archived)
-                        {
-                            <div class="btn btn-sm btn-danger">Archived</div>
-                        }
-                        else
-                        {
-                            <div class="btn btn-sm btn-success">Active</div>
-                        }
-                    </div>
-                </div>
-                @* Actions *@
-                <div class="col-2 d-flex flex-column">
+                <div class="row">
 
-                    <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
-                            <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @* Picture and Description Div *@
+                    <div class="col-12 col-md-6 d-flex">
+                        @* Picture *@
+                        <div class="col img-fluid col-4 d-flex align-items-center overflow-hidden" style="width:200px ;height:200px">
+                            @if (item.ImageFileData != null)
+                            {
+                                <img class="img-fluid" src="data:image/*;base64,@(Convert.ToBase64String(item.ImageFileData))" />
+                            }
+                        </div>
+                        @* Description *@
+                        <div class="col-8 bg-light p-3">
+                            <h5 class="text-bold">Description</h5>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </div>
                     </div>
 
-                    @{
-                        bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == btUser.Id;
-                    }
+                    @* Date and Status Div *@
+                    <div class="col-12 col-md-4 d-flex justify-content-center p-2">
+                    @* Dates *@
+                        <div class="bg-light d-flex flex-column">
+                            <div class="row rounded-2 bg-dark bg-opacity-10 m-2 text-center">
+                                <h5 class="text-bold">Start Date</h5>
+                                <h6>@item.StartDate.ToString("MM/dd/yyyy")</h6>
+                            </div>
+                            <div class="row rounded-2 bg-dark bg-opacity-10 m-2 text-center">
+                                <h5 class="text-bold">End Date</h5>
+                                <h6>@item.EndDate.ToString("MM/dd/yyyy")</h6>
+                            </div>
+                        </div>
+                    @* Status *@
+                        <div class="w-100">
+                            <div class="row m-3 d-flex">
+                                @if (item.Archived)
+                                {
+                                    <div class="btn btn-sm btn-danger">Archived</div>
+                                }
+                                else
+                                {
+                                    <div class="btn btn-sm btn-success">Active</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Actions Div *@
+                    <div class="col-12 col-md-2">
+                    @* Actions *@
+                        <div class="d-flex flex-column">
+
+                            <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
+                                    <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            </div>
+
+                            @{
+                                bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == btUser.Id;
+                            }
                     
-                    <div class="row p-2">
-                        @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
-                        {
-                                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        }
-                    </div>
+                            <div class="row p-2">
+                                @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
+                                {
+                                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                }
+                            </div>
 
-                    <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
-                        @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
-                        {
-                            @if (item.Archived)
-                            {
-                                <a class="btn btn-sm btn-outline-secondary" asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-sm btn-outline-secondary" asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-                            }
-                        }
+                            <div class="row p-2 bg-secondary bg-opacity-10 rounded-2">
+                                @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
+                                {
+                                    @if (item.Archived)
+                                    {
+                                        <a class="btn btn-sm btn-outline-secondary" asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-sm btn-outline-secondary" asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                                    }
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     
-    </div>
+        </div>
     }
