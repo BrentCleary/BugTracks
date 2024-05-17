@@ -19,12 +19,15 @@ namespace BugTracks.Controllers
             _context = context;
         }
 
+
         // GET: Invites
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Invites.Include(i => i.Company).Include(i => i.Invitee).Include(i => i.Invitor).Include(i => i.Project);
             return View(await applicationDbContext.ToListAsync());
         }
+
+
 
         // GET: Invites/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -47,6 +50,8 @@ namespace BugTracks.Controllers
 
             return View(invite);
         }
+
+
 
         // GET: Invites/Create
         public IActionResult Create()
@@ -77,6 +82,8 @@ namespace BugTracks.Controllers
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", invite.ProjectId);
             return View(invite);
         }
+
+
 
         // GET: Invites/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -137,6 +144,8 @@ namespace BugTracks.Controllers
             return View(invite);
         }
 
+
+
         // GET: Invites/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -173,6 +182,8 @@ namespace BugTracks.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
 
         private bool InviteExists(int id)
         {

@@ -25,6 +25,8 @@ namespace BugTracks.Controllers
             return View(await _context.Companies.ToListAsync());
         }
 
+
+
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -42,6 +44,8 @@ namespace BugTracks.Controllers
 
             return View(company);
         }
+
+
 
         // GET: Companies/Create
         public IActionResult Create()
@@ -62,8 +66,11 @@ namespace BugTracks.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(company);
         }
+
+
 
         // GET: Companies/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -118,6 +125,8 @@ namespace BugTracks.Controllers
             return View(company);
         }
 
+
+
         // GET: Companies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -126,8 +135,8 @@ namespace BugTracks.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Companies
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var company = await _context.Companies.FirstOrDefaultAsync(m => m.Id == id);
+
             if (company == null)
             {
                 return NotFound();
@@ -142,14 +151,18 @@ namespace BugTracks.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var company = await _context.Companies.FindAsync(id);
+
             if (company != null)
             {
                 _context.Companies.Remove(company);
             }
 
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+
 
         private bool CompanyExists(int id)
         {

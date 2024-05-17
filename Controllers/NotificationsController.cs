@@ -26,6 +26,8 @@ namespace BugTracks.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+
+
         // GET: Notifications/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,6 +48,8 @@ namespace BugTracks.Controllers
             return View(notification);
         }
 
+
+
         // GET: Notifications/Create
         public IActionResult Create()
         {
@@ -55,8 +59,6 @@ namespace BugTracks.Controllers
         }
 
         // POST: Notifications/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TicketId,Title,Message,Created,RecipientId,SenderId,Viewed")] Notification notification)
@@ -71,6 +73,8 @@ namespace BugTracks.Controllers
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", notification.TicketId);
             return View(notification);
         }
+
+
 
         // GET: Notifications/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -90,9 +94,7 @@ namespace BugTracks.Controllers
             return View(notification);
         }
 
-        // POST: Notifications/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Notifications/Edit/5  
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TicketId,Title,Message,Created,RecipientId,SenderId,Viewed")] Notification notification)
@@ -126,6 +128,8 @@ namespace BugTracks.Controllers
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", notification.TicketId);
             return View(notification);
         }
+
+
 
         // GET: Notifications/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -162,9 +166,14 @@ namespace BugTracks.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
         private bool NotificationExists(int id)
         {
             return _context.Notifications.Any(e => e.Id == id);
         }
     }
+
+    // REFERENCE
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 }

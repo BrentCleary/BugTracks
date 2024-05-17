@@ -25,11 +25,15 @@ namespace BugTracks.Controllers
 			_projectService = projectService;
 		}
 
+		// GET: Index View
 		public IActionResult Index()
         {
             return View();
         }
 
+
+
+		// GET: Dashboard View
         public async Task<IActionResult> Dashboard()
         {
             DashboardViewModel model = new DashboardViewModel();
@@ -44,7 +48,7 @@ namespace BugTracks.Controllers
         }
 
 
-
+		// ------------- Charts --------------
         // POST: Ggl Project Tickets
 		[HttpPost]
 		public async Task<JsonResult> GglProjectTickets()
@@ -63,8 +67,6 @@ namespace BugTracks.Controllers
 
 			return Json(chartData);
 		}
-
-
 
 		// POST: Ggl Project Priority
 		[HttpPost]
@@ -86,8 +88,6 @@ namespace BugTracks.Controllers
 
 			return Json(chartData);
 		}
-
-
 
 		// POST: AmCharts
 		[HttpPost]

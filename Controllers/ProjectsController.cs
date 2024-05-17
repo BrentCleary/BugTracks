@@ -54,6 +54,7 @@ namespace BugTracks.Controllers
         }
 
 
+
         // All Projects
         public async Task<IActionResult> AllProjects()
         {
@@ -88,7 +89,7 @@ namespace BugTracks.Controllers
 
 
 
-        // Unassigned Project
+        // Unassigned Projects
         [Authorize(Roles="Admin")]
         public async Task<IActionResult> UnassignedProjects()
         {
